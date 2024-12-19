@@ -1,0 +1,18 @@
+Versions - Description
+
+0.1 - Geração padrão sem entradas, apenas cômodos com alteração de seed
+
+0.2 - Geração com Ramdom walk aumentando a quantidade de vezes e partindo de locais aleatórios
+
+0.3 - geração com Ramdom walk iniciando 1 em cada quarto e parando na primeira parede
+
+0.4 - Geração com lógica dos corredores
+
+
+Notes:
+
+algumas seeds estão bugando pois a origem e o bound estão incoerentes, testa a seed: 456384
+
+
+
+ramdom walk mapa de densidade
