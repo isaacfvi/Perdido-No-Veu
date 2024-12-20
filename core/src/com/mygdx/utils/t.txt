@@ -1,47 +1,48 @@
-Sua ideia de conectar os cômodos e gerar portas a partir de um grafo de cômodos é bem estruturada. A seguir, vou detalhar uma forma de pensar sobre o processo, sem envolver código diretamente, para que você consiga planejar e organizar os passos.
+public void ramdomWalk(){
 
-Estruturação do Problema
-Criar o Grafo de Cômodos:
+        int x = rand.nextInt( 2, grade[0].length - 2);
+        int y = rand.nextInt(2, grade.length - 2);
+        int direcao, anterior;
 
-Cada cômodo será um nó no grafo.
-As arestas do grafo representarão conexões entre cômodos adjacentes (seja por parede ou por corredor).
-Mesmo que os cômodos sejam conectados por corredores, esses corredores não precisam ser caminhos já prontos; eles serão gerados após o grafo ser montado.
-Identificação de Cômodos Adjacentes:
+        boolean[][] visitados = new boolean[grade.length][grade[0].length];
 
-Para cada par de cômodos adjacentes, identifique as paredes que os separam. Essa é a "fronteira" entre eles.
-Adjacência pode ser de dois tipos: horizontal (parede compartilhada ao longo de uma linha) ou vertical (parede compartilhada ao longo de uma coluna).
-Uma vez que os cômodos adjacentes são identificados, você pode começar a "dividir" essas paredes.
-Determinar a Posição da Porta:
+        for(int i = 0; i < 15; i++){
+            direcao = rand.nextInt(4);
+            anterior = grade[y][x];
+            switch (direcao) {
+                case 0:
+                    if(x < grade[0].length - 2 && !visitados[y][x + 1]) {
+                        x++;
+                    }
+                    break;
+                case 1:
+                    if(x > 1 && !visitados[y][x - 1]){;
+                        x--;
+                    }
+                    break;
+                case 2:
+                    if(y < grade.length - 2 && !visitados[y + 1][x]) {
+                        y++;
+                    }
+                    break;
+                case 3:
+                    if(y > 1 && !visitados[y - 1][x]){
+                        y--;
+                    }
+                    break;
+            }
+            visitados[y][x] = true;
+            if(grade[y][x] == 1 && !isQuina(y, x) && anterior != 1){
+                grade[y][x] = 3;
+            }
+        }
+    }
 
-Após identificar a parede compartilhada entre dois cômodos, você precisa determinar qual cômodo tem a maior dimensão (largura ou altura) da parede. Vamos supor que temos dois cômodos:
-O comodo 1 possui uma parede de 10 pixels.
-O comodo 2 possui uma parede de 5 pixels.
-A lógica seria dividir a parede do cômodo de maior dimensão e posicionar a porta aproximadamente no meio. Ou seja:
-Se a parede tem 10 pixels, você criaria a porta no terceiro pixel, deixando uma divisão de aproximadamente 1 ou 2 pixels nas extremidades.
-Processo de Criação da Porta:
+    private boolean isQuina(int y, int x) {
+        boolean quinaCima = ((grade[y-1][x] == 1 || grade[y-1][x] == 3) && (grade[y][x-1] == 1 || grade[y][x-1] == 3) && (grade[y][x+1] == 1 || grade[y][x+1] == 3));
+        boolean quinaBaixo = ((grade[y+1][x] == 1 || grade[y+1][x] == 3) && (grade[y][x-1] == 1 || grade[y][x-1] == 3) && (grade[y][x+1] == 1 || grade[y][x+1] == 3));
+        boolean quinaEsquerda = ((grade[y][x-1] == 1 || grade[y][x-1] == 3) && (grade[y-1][x] == 1 || grade[y-1][x] == 3) && (grade[y+1][x] == 1 || grade[y+1][x] == 3));
+        boolean quinaDireita = ((grade[y][x+1] == 1 || grade[y][x+1] == 3) && (grade[y-1][x] == 1 || grade[y-1][x] == 3) && (grade[y+1][x] == 1 || grade[y+1][x] == 3));
 
-Passo 1: Selecione a parede compartilhada entre os dois cômodos.
-Passo 2: Determine qual dos dois cômodos tem a maior parede. Se a parede for horizontal, defina qual cômodo tem a maior largura. Se a parede for vertical, defina qual cômodo tem a maior altura.
-Passo 3: Divida a parede do cômodo de maior dimensão e coloque uma porta. Para isso, você pode criar um "buraco" na parede, substituindo a parte da parede por uma "porta" (por exemplo, o valor 2 no seu mapa).
-O valor 2 representaria a porta, enquanto o valor 1 continua sendo a parede.
-Esse processo de adicionar a porta pode ser simplificado considerando o seguinte:
-
-Defina um "ponto de corte" na parede compartilhada. Esse ponto de corte é o local onde a porta será criada. Se a parede for de 10 pixels de comprimento, o ponto de corte seria no meio (por exemplo, no 3º ou 4º pixel).
-Isso pode ser feito para cada cômodo adjacente.
-Conectando Corredores
-Após ter identificado as paredes e as portas, você pode, então, conectar os corredores que ligam os cômodos adjacentes, preenchendo os espaços vazios entre as portas. Isso pode ser feito com algum algoritmo de caminho (como uma caminhada aleatória ou uma linha reta entre os centros dos cômodos) para garantir que todas as salas estejam de fato conectadas por corredores.
-
-Considerações para o Algoritmo
-Determinar os Vizinhos de um Cômodo:
-
-Primeiro, você deve identificar todos os cômodos adjacentes para cada cômodo. Isso pode ser feito verificando as coordenadas dos limites de cada cômodo e verificando se há sobreposição com outro cômodo.
-Criar o Grafo:
-
-O grafo pode ser representado como uma lista de adjacência ou uma matriz de adjacência. O nó de cada cômodo estará conectado a outros nós adjacentes. Para cada cômodo, as arestas representam as paredes que, uma vez removidas, vão se transformar em portas.
-Posicionar Portas nas Paredes:
-
-Se dois cômodos têm uma parede compartilhada de 10 pixels e 5 pixels, a parede do cômodo maior (10 pixels) será escolhida para criar a porta.
-A posição da porta será no meio dessa parede (exemplo: se a parede tem 10 pixels, crie a porta no 3º ou 4º pixel).
-Passagens entre Cômodos:
-
-Uma vez que as portas são criadas, você pode traçar um caminho entre elas, utilizando o algoritmo escolhido (pode ser uma linha reta ou algum algoritmo de busca para percorrer as paredes).
+        return quinaCima || quinaBaixo || quinaEsquerda || quinaDireita;
+    }

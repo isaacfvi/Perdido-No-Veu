@@ -14,13 +14,15 @@ import java.util.*;
 public class GeracaoProcedural {
 
     private int[][] grade;
+
     private final Random rand;
-    List<Room> rooms;
+
+    private List<Room> rooms;
+    private int[][] roomGrafo;
+
     private Pixmap pixmap;
     private Texture texture;
     private final boolean saveImage = false;
-    Consts cs;
-
 
     private final int minRoomArea = 100;
     private final int minRoomSide = 5;
@@ -28,7 +30,7 @@ public class GeracaoProcedural {
 
     public GeracaoProcedural(int width, int height, int seed) {
         rand = new Random();
-        rand.setSeed(8324496);
+        //rand.setSeed(8324493);
         // melhor seed ever: 8324493
         grade = new int[width][height];
         pixmap = new Pixmap(height, width, Pixmap.Format.RGBA8888);
@@ -39,7 +41,7 @@ public class GeracaoProcedural {
         texture = generatePixmap();
 
         if(saveImage) {
-            savePixmap("v0.6.3.png");
+            savePixmap("outros.png");
         }
 
     }
@@ -47,9 +49,9 @@ public class GeracaoProcedural {
     public void generate(){
         initMap();
         generate(0, 0, grade.length - 1, grade[0].length - 1, rand.nextBoolean());
+        generateGrafo();
         createEntrances();
         posProcess();
-
     }
 
     public void initMap() {
@@ -95,8 +97,49 @@ public class GeracaoProcedural {
 
     }
 
+    private void generateGrafo(){
+        roomGrafo = new int[rooms.size()][rooms.size()];
+
+        for(int i = 0; i < roomGrafo.length; i++){
+            for(int j = 0; j < roomGrafo[i].length; j++){
+                if(rooms.get(i).isAdjascent(rooms.get(j))){
+                    roomGrafo[i][j] = 1;
+                }
+            }
+        }
+    }
+
+    private int[] generateCorridorGroups(){
+        int[] corridorGroups = new int[rooms.size()];
+        int group = 0;
+        int node;
+        Queue<Integer> nos = new LinkedList<>();
+
+        for(int i = 0; i < rooms.size(); i++){
+            if(corridorGroups[i] > 0 || rooms.get(i).getRoomType() != Consts.CORREDOR) continue;
+            nos.offer(i);
+            group++;
+
+            do{
+                node = nos.poll();
+                corridorGroups[node] = group;
+
+                for(int j = 0; j < roomGrafo[node].length; j++){
+                    if(roomGrafo[node][j] == 1 && rooms.get(j).getRoomType() == Consts.CORREDOR && corridorGroups[j] == 0){
+                        nos.offer(j);
+                    }
+                }
+
+            }while(!nos.isEmpty());
+        }
+
+        return corridorGroups;
+    }
+
+
     private void posProcess() {
         fixUnconectedRooms();
+        //debug();
         openCorridors();
         fixCorners();
 
@@ -105,12 +148,13 @@ public class GeracaoProcedural {
     private void fixUnconectedRooms(){
         for(Room room : rooms){
             if(!room.isConected(grade)){
-
                 for(Room other : rooms){
                     if(room == other)continue;
+
                     if(room.isAdjascent(other)){
-                        criarEntrada(room, other);
-                        break;
+                        if(criarEntrada(room, other)){
+                            break;
+                        }
                     }
                 }
             }
@@ -180,65 +224,38 @@ public class GeracaoProcedural {
         }
     }
 
-    public void ramdomWalk(){
+    public void createEntrances() {
+        int [] corridorGroup = generateCorridorGroups();
+        List<Integer> conecteds = new ArrayList<>();
 
-        int x = rand.nextInt( 2, grade[0].length - 2);
-        int y = rand.nextInt(2, grade.length - 2);
-        int direcao, anterior;
-
-        boolean[][] visitados = new boolean[grade.length][grade[0].length];
-
-        for(int i = 0; i < 15; i++){
-            direcao = rand.nextInt(4);
-            anterior = grade[y][x];
-            switch (direcao) {
-                case 0:
-                    if(x < grade[0].length - 2 && !visitados[y][x + 1]) {
-                        x++;
-                    }
-                    break;
-                case 1:
-                    if(x > 1 && !visitados[y][x - 1]){;
-                        x--;
-                    }
-                    break;
-                case 2:
-                    if(y < grade.length - 2 && !visitados[y + 1][x]) {
-                        y++;
-                    }
-                    break;
-                case 3:
-                    if(y > 1 && !visitados[y - 1][x]){
-                        y--;
-                    }
-                    break;
+        for(int i = 0; i < roomGrafo.length; i++){
+            if(rooms.get(i).getRoomType() == Consts.CORREDOR) continue;
+            for(int j = 0; j < roomGrafo[i].length; j++){
+                if (i == j || rooms.get(j).getRoomType() != Consts.CORREDOR) continue;
+                if(roomGrafo[i][j] == 1 && !conecteds.contains(corridorGroup[j])) {
+                    conecteds.add(corridorGroup[j]);
+                    criarEntrada(rooms.get(i), rooms.get(j));
+                }
             }
-            visitados[y][x] = true;
-            if(grade[y][x] == 1 && !isQuina(y, x) && anterior != 1){
-                grade[y][x] = 3;
-            }
+            conecteds.clear();
         }
     }
 
-    private boolean isQuina(int y, int x) {
-        boolean quinaCima = ((grade[y-1][x] == 1 || grade[y-1][x] == 3) && (grade[y][x-1] == 1 || grade[y][x-1] == 3) && (grade[y][x+1] == 1 || grade[y][x+1] == 3));
-        boolean quinaBaixo = ((grade[y+1][x] == 1 || grade[y+1][x] == 3) && (grade[y][x-1] == 1 || grade[y][x-1] == 3) && (grade[y][x+1] == 1 || grade[y][x+1] == 3));
-        boolean quinaEsquerda = ((grade[y][x-1] == 1 || grade[y][x-1] == 3) && (grade[y-1][x] == 1 || grade[y-1][x] == 3) && (grade[y+1][x] == 1 || grade[y+1][x] == 3));
-        boolean quinaDireita = ((grade[y][x+1] == 1 || grade[y][x+1] == 3) && (grade[y-1][x] == 1 || grade[y-1][x] == 3) && (grade[y+1][x] == 1 || grade[y+1][x] == 3));
+    /*public void createEntrances() {
+        int [] corridorGroup = generateCorridorGroups();
 
-        return quinaCima || quinaBaixo || quinaEsquerda || quinaDireita;
-    }
-
-    public void createEntrances() {
         for (Room room : rooms) {
+            if(room.getRoomType() == Consts.CORREDOR) continue;
             for (Room other : rooms) {
                 if (room == other || other.getRoomType() != Consts.CORREDOR) continue;
-                criarEntrada(room, other);
+                if(room.isAdjascent(other) && other.isConected(grade)){
+                    criarEntrada(room, other);
+                }
             }
         }
-    }
+    }*/
 
-    private void criarEntrada(Room room, Room other) {
+    private boolean criarEntrada(Room room, Room other) {
         int start, end, mid;
 
         // Conexão horizontal
@@ -249,6 +266,7 @@ public class GeracaoProcedural {
             if (end - start > 2) {
                 mid = start + (end - start) / 2;
                 grade[room.getEndX() == other.getStartX() ? room.getEndX() : room.getStartX()][mid] = 2;
+                return true;
             }
         }
 
@@ -260,8 +278,10 @@ public class GeracaoProcedural {
             if (end - start > 2) {
                 mid = start + (end - start) / 2;
                 grade[mid][room.getEndY() == other.getStartY() ? room.getEndY() : room.getStartY()] = 2;
+                return true;
             }
         }
+        return false;
     }
 
     public Texture generatePixmap() {
@@ -314,5 +334,9 @@ public class GeracaoProcedural {
         PixmapIO.writePNG(file, pixmap);
 
         System.out.println("Imagem salva em: " + file.file().getAbsolutePath());
+    }
+
+    private void debug(){
+
     }
 }

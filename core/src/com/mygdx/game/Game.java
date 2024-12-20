@@ -41,7 +41,7 @@ public class Game extends ApplicationAdapter {
 
 
 		geracao = new GeracaoProcedural(40, 40, 61576541);
-		geracao.printGrade();
+		//geracao.printGrade();
 
 	}
 
