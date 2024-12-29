@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,10 +9,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.utils.Assets;
 import com.mygdx.utils.Controller;
-import com.mygdx.utils.GeracaoProcedural;
+import com.mygdx.proceduralGeneration.GeracaoProcedural;
 import com.mygdx.utils.MeuInputProcessor;
-
-import java.util.Random;
 
 public class Game extends ApplicationAdapter {
 	private SpriteBatch batch;
@@ -41,7 +38,7 @@ public class Game extends ApplicationAdapter {
 
 
 		geracao = new GeracaoProcedural(40, 40, 61576541);
-		//geracao.printGrade();
+		geracao.printGrade();
 
 	}
 

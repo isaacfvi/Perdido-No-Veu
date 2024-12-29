@@ -1,7 +1,8 @@
 package com.mygdx.utils;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
+import com.mygdx.entities.Camera;
+import com.mygdx.entities.Entidade;
 import com.mygdx.entities.Jogador;
 
 public class MeuInputProcessor implements InputProcessor {
@@ -77,19 +78,11 @@ public class MeuInputProcessor implements InputProcessor {
         return false;
     }
 
-    public void update(Jogador jogador, float delta) {
+    public void update(Entidade entity, float delta) {
         float deltaX = (moviment[0] ? -delta : 0) + (moviment[1] ? delta : 0);
         float deltaY = (moviment[2] ? delta : 0) + (moviment[3] ? -delta : 0);
         if (deltaX != 0 || deltaY != 0) {
-            jogador.move(deltaX, deltaY);
-        }
-    }
-
-    public void update(Camera camera, float delta) {
-        float deltaX = (moviment[0] ? -delta : 0) + (moviment[1] ? delta : 0);
-        float deltaY = (moviment[2] ? delta : 0) + (moviment[3] ? -delta : 0);
-        if (deltaX != 0 || deltaY != 0) {
-            camera.move(deltaX, deltaY);
+            entity.move(deltaX, deltaY);
         }
     }
 }

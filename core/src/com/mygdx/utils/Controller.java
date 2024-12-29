@@ -1,11 +1,10 @@
 package com.mygdx.utils;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.entities.Camera;
 import com.mygdx.entities.Fantasma;
 import com.mygdx.entities.Jogador;
 import com.mygdx.scenes.Mansion;
-import com.mygdx.utils.Assets;
 
 public class Controller {
 
@@ -16,9 +15,9 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.camera = new Camera(meuInput);
-        this.fantasma = new Fantasma(assets);
-        this.jogador = new Jogador(meuInput, assets);
+        this.camera = new Camera(meuInput, 500);
+        this.fantasma = new Fantasma(assets, 350);
+        this.jogador = new Jogador(meuInput, assets, 500);
         this.mansion = new Mansion(assets);
 
     }
@@ -28,9 +27,10 @@ public class Controller {
             jogador.update(delta);
             camera.update(delta);
         }
-        fantasma.update(delta, jogador.getPosicao());
+        fantasma.setAlvo(jogador.getPosicao());
+        fantasma.update(delta);
         mansion.update();
-        verifica_colisoes();
+        //verifica_colisoes();
     }
 
     public void draw(SpriteBatch batch){
@@ -45,11 +45,11 @@ public class Controller {
         mansion.dispose();
     }
 
-    public void verifica_colisoes(){
+    /*public void verifica_colisoes(){
         if(fantasma.gethitboxRectangle().overlaps(jogador.gethitbox())){
             jogador.died();
         }
-    }
+    }*/
 
     public Camera getCamera() {
         return camera;

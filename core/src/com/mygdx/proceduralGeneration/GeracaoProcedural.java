@@ -1,4 +1,4 @@
-package com.mygdx.utils;
+package com.mygdx.proceduralGeneration;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.scenes.Room;
+import com.mygdx.utils.Consts;
 
 
 import java.util.*;
@@ -136,7 +137,6 @@ public class GeracaoProcedural {
         return corridorGroups;
     }
 
-
     private void posProcess() {
         fixUnconectedRooms();
         //debug();
@@ -174,7 +174,6 @@ public class GeracaoProcedural {
             }
         }
     }
-
 
     private void conectRooms(Room room, Room other) {
         int start, end;
@@ -241,20 +240,6 @@ public class GeracaoProcedural {
         }
     }
 
-    /*public void createEntrances() {
-        int [] corridorGroup = generateCorridorGroups();
-
-        for (Room room : rooms) {
-            if(room.getRoomType() == Consts.CORREDOR) continue;
-            for (Room other : rooms) {
-                if (room == other || other.getRoomType() != Consts.CORREDOR) continue;
-                if(room.isAdjascent(other) && other.isConected(grade)){
-                    criarEntrada(room, other);
-                }
-            }
-        }
-    }*/
-
     private boolean criarEntrada(Room room, Room other) {
         int start, end, mid;
 
@@ -282,6 +267,10 @@ public class GeracaoProcedural {
             }
         }
         return false;
+    }
+
+    public int[][] getGrade(){
+        return grade;
     }
 
     public Texture generatePixmap() {
