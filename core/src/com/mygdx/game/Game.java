@@ -22,7 +22,7 @@ public class Game extends ApplicationAdapter {
 
 	private final byte MENU = 0;
 	private final byte GAME = 1;
-	private byte state = MENU;
+	private byte state = GAME;
 
 
 	private GeracaoProcedural geracao;
@@ -37,7 +37,8 @@ public class Game extends ApplicationAdapter {
 		batch = new SpriteBatch();
 
 
-		geracao = new GeracaoProcedural(40, 40, 61576541);
+		geracao = new GeracaoProcedural(20, 40, 61576541);
+		geracao.generate();
 		geracao.printGrade();
 
 	}
@@ -78,6 +79,7 @@ public class Game extends ApplicationAdapter {
 	public void dispose() {
 		batch.dispose();
 		assets.dispose();
-		geracao.dispose();
+		controller.dispose();
+		//geracao.dispose();
 	}
 }

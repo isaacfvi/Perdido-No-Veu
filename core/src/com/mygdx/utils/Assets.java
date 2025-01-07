@@ -21,7 +21,7 @@ public class Assets {
 
     public void loadTextures(){
         assetManager.load("Fantasma.png", Texture.class);
-        assetManager.load("Piso.png", Texture.class);
+        assetManager.load("MansionTiles.png", Texture.class);
         assetManager.load("Player.png", Texture.class);
     }
 

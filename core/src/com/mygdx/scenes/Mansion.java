@@ -1,37 +1,92 @@
 package com.mygdx.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.proceduralGeneration.GeracaoProcedural;
+import com.mygdx.proceduralGeneration.TileMap;
+import com.mygdx.proceduralGeneration.TileType;
 import com.mygdx.utils.Assets;
+
+import java.util.Random;
 
 public class Mansion {
 
-    private Assets assets;
     private Texture texture;
-    private Sprite sprite;
-    private Vector2 posicao;
+    private Array<Sprite> floors;
+    private Array<Sprite> walls;
+    private TextureAtlas atlas;
+    private GeracaoProcedural geracao;
+    private TileMap[][] map;
 
     public Mansion(Assets assets) {
-        this.assets = assets;
-        this.texture =  assets.getTexture("Piso");
-        this.sprite = new Sprite(texture);
-        this.sprite.setSize(320, 320);
-        this.posicao = new Vector2();
+        atlas = new TextureAtlas(Gdx.files.internal("MansionTiles.atlas"));
+
+        geracao = new GeracaoProcedural(20, 40, 61576541);
+        map = new TileMap[20][40];
+        floors = new Array<>();
+        walls = new Array<>();
+
+        generateMap();
+
+    }
+
+    public void generateMap() {
+        map = geracao.generate();
+        final int scl = 10;
+        Random rand = new Random(geracao.getSeed());
+        float aux;
+        Sprite sprite;
+
+        for(int i = 0; i < map.length; i++) {
+            for(int j = 0; j < map[0].length; j++) {
+
+                aux = rand.nextFloat();
+                aux = aux < 0.1f ? rand.nextInt(2,4) : 1;
+
+                sprite = new Sprite(atlas.createSprite(TileType.CHAO.getDesc() + (int)aux));
+                sprite.setScale(scl, scl);
+                sprite.setPosition(scl*map[i][j].getX(),scl* map[i][j].getY());
+                floors.add(sprite);
+
+                if(map[i][j].getTileType() != TileType.CHAO){
+
+                    if(map[i][j].getTileType().getDesc().equals("Parede_horizontal")){
+                        sprite = new Sprite(atlas.createSprite(map[i][j].getTileType().getDesc() + (int)aux));
+                    }
+                    else{
+                        sprite = new Sprite(atlas.createSprite(map[i][j].getTileType().getDesc()));
+                    }
+                    sprite.setScale(scl, scl);
+                    sprite.setPosition(scl * map[i][j].getX(), scl * map[i][j].getY());
+                    walls.add(sprite);
+
+                }
+            }
+        }
     }
 
     public void update(){
-        sprite.setPosition(posicao.x - sprite.getWidth()/2, posicao.y - sprite.getHeight()/2);
-        sprite.setSize(320, 320);
     }
 
-    public void draw(SpriteBatch batch){
-        sprite.draw(batch);
+    public void drawFloor(SpriteBatch batch){
+        for(int i = 0; i < floors.size; i++) {
+            floors.get(i).draw(batch);
+        }
+    }
 
+    public void drawWalls(SpriteBatch batch){
+        for(int i = 0; i < walls.size; i++) {
+            walls.get(i).draw(batch);
+        }
     }
 
     public void dispose(){
+        geracao.printGrade();
         texture.dispose();
     }
 

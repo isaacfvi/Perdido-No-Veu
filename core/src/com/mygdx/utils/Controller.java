@@ -15,9 +15,9 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.camera = new Camera(meuInput, 500);
+        this.camera = new Camera(meuInput, 800);
         this.fantasma = new Fantasma(assets, 350);
-        this.jogador = new Jogador(meuInput, assets, 500);
+        this.jogador = new Jogador(meuInput, assets, 800);
         this.mansion = new Mansion(assets);
 
     }
@@ -34,15 +34,16 @@ public class Controller {
     }
 
     public void draw(SpriteBatch batch){
-        mansion.draw(batch);
+        mansion.drawFloor(batch);
         if(jogador.isAlive()){jogador.draw(batch);}
         fantasma.draw(batch);
+        mansion.drawWalls(batch);
     }
 
     public void dispose(){
         fantasma.dispose();
         jogador.dispose();
-        mansion.dispose();
+        //mansion.dispose();
     }
 
     /*public void verifica_colisoes(){
