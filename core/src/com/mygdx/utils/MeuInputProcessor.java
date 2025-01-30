@@ -84,5 +84,12 @@ public class MeuInputProcessor implements InputProcessor {
         if (deltaX != 0 || deltaY != 0) {
             entity.move(deltaX, deltaY);
         }
+
     }
+
+    public boolean isMoving() {
+        // Se qualquer direção de movimento estiver ativa, retorna true
+        return moviment[0] || moviment[1] || moviment[2] || moviment[3];
+    }
+
 }

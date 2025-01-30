@@ -1,6 +1,5 @@
 package com.mygdx.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.utils.Animation;
@@ -64,6 +63,11 @@ public class Entidade {
     }
 
     public void update(float delta) {
+
+        if (meuInput != null && !(meuInput.isMoving())) {
+            anim.reset();
+        }
+
         anim.update(delta);
     }
 

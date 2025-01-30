@@ -37,6 +37,11 @@ public class Animation {
         this.direcao = direcao;
     }
 
+    public void reset() {
+        currentframe = 0;
+        tempoAcumuladoSprite = 0;
+    }
+
     public void update(float delta) {
         tempoAcumuladoSprite += delta;
         if(tempoAcumuladoSprite >= frameDuration){
