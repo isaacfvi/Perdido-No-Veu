@@ -46,3 +46,8 @@ public void ramdomWalk(){
 
         return quinaCima || quinaBaixo || quinaEsquerda || quinaDireita;
     }
+
+
+
+
+

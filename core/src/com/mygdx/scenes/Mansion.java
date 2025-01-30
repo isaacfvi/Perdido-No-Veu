@@ -26,8 +26,7 @@ public class Mansion {
     public Mansion(Assets assets) {
         atlas = new TextureAtlas(Gdx.files.internal("MansionTiles.atlas"));
 
-        geracao = new GeracaoProcedural(20, 40, 61576541);
-        map = new TileMap[20][40];
+        geracao = new GeracaoProcedural(20, 10, 61576541);
         floors = new Array<>();
         walls = new Array<>();
 

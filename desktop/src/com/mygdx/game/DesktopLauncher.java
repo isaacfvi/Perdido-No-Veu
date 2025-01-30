@@ -14,6 +14,6 @@ public class DesktopLauncher {
 		Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
 		config.setFullscreenMode(displayMode);
 
-		new Lwjgl3Application(new Game(), config);
+		new Lwjgl3Application(new GameStart(), config);
 	}
 }

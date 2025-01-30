@@ -32,7 +32,7 @@ public class GeracaoProcedural {
     private int seed;
 
     public GeracaoProcedural(int width, int height, int seed) {
-        rand = new Random(seed);
+        rand = new Random();
         this.seed = seed;
         //rand.setSeed(seed);
         // melhor seed ever: 7451143
@@ -40,13 +40,9 @@ public class GeracaoProcedural {
         pixmap = new Pixmap(height, width, Pixmap.Format.RGBA8888);
         rooms = new ArrayList<>();
 
-        /*generate();
-
-        texture = generatePixmap();
-
         if(saveImage) {
             savePixmap("mansion2.png");
-        }*/
+        }
 
     }
 
@@ -57,6 +53,15 @@ public class GeracaoProcedural {
         createEntrances();
         posProcess();
         return finishMap();
+    }
+
+    public void tccGenerate(){
+        resetMap();
+        generate(0, 0, grade.length - 1, grade[0].length - 1, rand.nextBoolean());
+        generateGrafo();
+        createEntrances();
+        posProcess();
+        texture = generatePixmap();
     }
 
     public void resetMap() {
