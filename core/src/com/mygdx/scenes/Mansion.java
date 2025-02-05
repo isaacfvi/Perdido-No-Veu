@@ -22,6 +22,7 @@ public class Mansion {
     private TextureAtlas atlas;
     private GeracaoProcedural geracao;
     private TileMap[][] map;
+    private final int scl = 10;
 
     public Mansion(Assets assets) {
         atlas = new TextureAtlas(Gdx.files.internal("MansionTiles.atlas"));
@@ -48,11 +49,41 @@ public class Mansion {
                 aux = aux < 0.1f ? rand.nextInt(2,4) : 1;
 
                 sprite = new Sprite(atlas.createSprite(TileType.CHAO.getDesc() + (int)aux));
-                sprite.setScale(scl, scl);
-                sprite.setPosition(scl*map[i][j].getX(),scl* map[i][j].getY());
+                setSprites(sprite, i, j);
                 floors.add(sprite);
 
-                if(map[i][j].getTileType() != TileType.CHAO){
+                if(j == 0 && (i == 0 || i == map.length - 1)) {
+                    sprite = new Sprite(atlas.createSprite(TileType.PAREDE_VERTICAL.getDesc()));
+                    setSprites(sprite, i, j);
+                    walls.add(sprite);
+                }
+                if(i == 0) {
+                    sprite = new Sprite(atlas.createSprite(TileType.CANTOS.getDesc()));
+                    sprite.rotate(180);
+                    setSprites(sprite, i, j);
+                    walls.add(sprite);
+
+                } else if(i == map.length-1){
+                    sprite = new Sprite(atlas.createSprite(TileType.CANTOS.getDesc()));
+                    setSprites(sprite, i, j);
+                    walls.add(sprite);
+
+                }
+                if(j == 0){
+                    sprite = new Sprite(atlas.createSprite(TileType.CANTOS.getDesc()));
+                    sprite.rotate(270);
+                    setSprites(sprite, i, j);
+                    walls.add(sprite);
+
+                } else if(j == map[0].length-1){
+                    sprite = new Sprite(atlas.createSprite(TileType.CANTOS.getDesc()));
+                    sprite.rotate(90);
+                    setSprites(sprite, i, j);
+                    walls.add(sprite);
+
+                }
+
+                if(map[i][j].getTileType() != TileType.CHAO && j != 0){
 
                     if(map[i][j].getTileType().getDesc().equals("Parede_horizontal")){
                         sprite = new Sprite(atlas.createSprite(map[i][j].getTileType().getDesc() + (int)aux));
@@ -60,13 +91,16 @@ public class Mansion {
                     else{
                         sprite = new Sprite(atlas.createSprite(map[i][j].getTileType().getDesc()));
                     }
-                    sprite.setScale(scl, scl);
-                    sprite.setPosition(scl * map[i][j].getX(), scl * map[i][j].getY());
+                    setSprites(sprite, i, j);
                     walls.add(sprite);
-
                 }
             }
         }
+    }
+
+    private void setSprites(Sprite sprite, int i, int j) {
+        sprite.setScale(scl, scl);
+        sprite.setPosition(scl*map[i][j].getX(),scl* map[i][j].getY());
     }
 
     public void update(){
