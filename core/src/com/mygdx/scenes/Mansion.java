@@ -1,7 +1,6 @@
 package com.mygdx.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -16,7 +15,6 @@ import java.util.Random;
 
 public class Mansion {
 
-    private Texture texture;
     private Array<Sprite> floors;
     private Array<Sprite> walls;
     private TextureAtlas atlas;
@@ -27,7 +25,8 @@ public class Mansion {
     public Mansion(Assets assets) {
         atlas = new TextureAtlas(Gdx.files.internal("MansionTiles.atlas"));
 
-        geracao = new GeracaoProcedural(20, 10, 61576541);
+        geracao = new GeracaoProcedural(40, 40, 61646541);
+        //61576541
         floors = new Array<>();
         walls = new Array<>();
 
@@ -75,6 +74,17 @@ public class Mansion {
                     setSprites(sprite, i, j);
                     walls.add(sprite);
 
+                    sprite = new Sprite(atlas.createSprite(TileType.PAREDE_VERTICAL.getDesc()));
+                    sprite.rotate(90);
+                    setSprites(sprite, i, j);
+                    walls.add(sprite);
+
+                    if(map[i][j].getTileType().getDesc().equals("T_horizontal_cima")){
+                        sprite = new Sprite(atlas.createSprite(TileType.PAREDE_VERTICAL.getDesc()));
+                        setSprites(sprite, i, j);
+                        walls.add(sprite);
+                    }
+
                 } else if(j == map[0].length-1){
                     sprite = new Sprite(atlas.createSprite(TileType.CANTOS.getDesc()));
                     sprite.rotate(90);
@@ -120,7 +130,6 @@ public class Mansion {
 
     public void dispose(){
         geracao.printGrade();
-        texture.dispose();
     }
 
 }
