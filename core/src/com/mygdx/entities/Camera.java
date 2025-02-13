@@ -12,11 +12,12 @@ public class Camera extends Entidade{
     private Viewport viewport;
 
     public Camera(MeuInputProcessor meuInput, int velocidade) {
-        super(new Vector2(), velocidade, meuInput);
+        super(new Vector2(50, 50), velocidade, meuInput);
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(3*1920, 3*1080, camera);
 
         camera.position.set(super.getPosition().x, super.getPosition().y, 0);
+        camera.zoom = 0.05f;
         camera.update();
     }
 
@@ -33,7 +34,7 @@ public class Camera extends Entidade{
 
     @Override
     public void move(float x, float y) {
-        super.addPosition(new Vector2(x * super.getVelocidade(), y * super.getVelocidade()));
+        super.move(x, y);
     }
 
     public void resize(int width, int height) {

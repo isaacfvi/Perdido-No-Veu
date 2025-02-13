@@ -6,12 +6,14 @@ import com.mygdx.utils.Animation;
 import com.mygdx.utils.Assets;
 import com.mygdx.utils.MeuInputProcessor;
 
+import java.awt.*;
+
 public class Jogador extends Entidade{
 
     private boolean alive;
 
     public Jogador(MeuInputProcessor meuInput, Assets assets, int velocidade) {
-        super(new Vector2(), velocidade, new Animation("Player", assets, 2, 3), meuInput);
+        super(new Vector2(50, 50), velocidade, new Animation("Player", assets, 2, 3), meuInput);
         this.alive = true;
     }
 

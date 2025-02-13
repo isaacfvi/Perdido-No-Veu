@@ -14,7 +14,7 @@ public class TccScreen implements Screen {
 
     @Override
     public void show() {
-        geracao = new GeracaoProcedural(20, 40, 546843);
+        geracao = new GeracaoProcedural(30, 40, 546843);
         geracao.tccGenerate();
         batch = new SpriteBatch();
 

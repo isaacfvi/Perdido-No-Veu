@@ -15,9 +15,9 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.camera = new Camera(meuInput, 800);
-        this.fantasma = new Fantasma(assets, 350);
-        this.jogador = new Jogador(meuInput, assets, 800);
+        this.camera = new Camera(meuInput, 80);
+        this.fantasma = new Fantasma(assets, 35);
+        this.jogador = new Jogador(meuInput, assets, 80);
         this.mansion = new Mansion(assets);
 
     }
@@ -45,12 +45,6 @@ public class Controller {
         jogador.dispose();
         //mansion.dispose();
     }
-
-    /*public void verifica_colisoes(){
-        if(fantasma.gethitboxRectangle().overlaps(jogador.gethitbox())){
-            jogador.died();
-        }
-    }*/
 
     public Camera getCamera() {
         return camera;

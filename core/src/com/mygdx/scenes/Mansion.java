@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.Collision;
 import com.mygdx.proceduralGeneration.GeracaoProcedural;
 import com.mygdx.proceduralGeneration.TileMap;
 import com.mygdx.proceduralGeneration.TileType;
 import com.mygdx.utils.Assets;
 
+import java.awt.*;
 import java.util.Random;
 
 public class Mansion {
@@ -20,12 +22,11 @@ public class Mansion {
     private TextureAtlas atlas;
     private GeracaoProcedural geracao;
     private TileMap[][] map;
-    private final int scl = 10;
 
     public Mansion(Assets assets) {
         atlas = new TextureAtlas(Gdx.files.internal("MansionTiles.atlas"));
 
-        geracao = new GeracaoProcedural(40, 40, 61646541);
+        geracao = new GeracaoProcedural(20, 10, 61646541);
         //61576541
         floors = new Array<>();
         walls = new Array<>();
@@ -36,7 +37,6 @@ public class Mansion {
 
     public void generateMap() {
         map = geracao.generate();
-        final int scl = 10;
         Random rand = new Random(geracao.getSeed());
         float aux;
         Sprite sprite;
@@ -55,17 +55,20 @@ public class Mansion {
                     sprite = new Sprite(atlas.createSprite(TileType.PAREDE_VERTICAL.getDesc()));
                     setSprites(sprite, i, j);
                     walls.add(sprite);
+                    inscreverParede(i, j);
                 }
                 if(i == 0) {
                     sprite = new Sprite(atlas.createSprite(TileType.CANTOS.getDesc()));
                     sprite.rotate(180);
                     setSprites(sprite, i, j);
                     walls.add(sprite);
+                    inscreverParede(i, j);
 
                 } else if(i == map.length-1){
                     sprite = new Sprite(atlas.createSprite(TileType.CANTOS.getDesc()));
                     setSprites(sprite, i, j);
                     walls.add(sprite);
+                    inscreverParede(i, j);
 
                 }
                 if(j == 0){
@@ -73,16 +76,19 @@ public class Mansion {
                     sprite.rotate(270);
                     setSprites(sprite, i, j);
                     walls.add(sprite);
+                    inscreverParede(i, j);
 
                     sprite = new Sprite(atlas.createSprite(TileType.PAREDE_VERTICAL.getDesc()));
                     sprite.rotate(90);
                     setSprites(sprite, i, j);
                     walls.add(sprite);
+                    inscreverParede(i, j);
 
                     if(map[i][j].getTileType().getDesc().equals("T_horizontal_cima")){
                         sprite = new Sprite(atlas.createSprite(TileType.PAREDE_VERTICAL.getDesc()));
                         setSprites(sprite, i, j);
                         walls.add(sprite);
+                        inscreverParede(i, j);
                     }
 
                 } else if(j == map[0].length-1){
@@ -90,6 +96,7 @@ public class Mansion {
                     sprite.rotate(90);
                     setSprites(sprite, i, j);
                     walls.add(sprite);
+                    inscreverParede(i, j);
 
                 }
 
@@ -103,14 +110,25 @@ public class Mansion {
                     }
                     setSprites(sprite, i, j);
                     walls.add(sprite);
+                    inscreverParede(i, j);
                 }
             }
         }
     }
 
+    private void inscreverParede(int i, int j){
+        Collision collision = Collision.getInstance();
+        Rectangle[] hitboxes = map[i][j].getTileType().getHitboxes();
+
+        for(int k = 0; k < hitboxes.length; k++) {
+            hitboxes[k].setLocation((int)(hitboxes[k].getX() + map[i][j].getX()), (int)(hitboxes[k].getY() + map[i][j].getY()));
+            collision.inscreverParede(hitboxes[k]);
+        }
+
+    }
+
     private void setSprites(Sprite sprite, int i, int j) {
-        sprite.setScale(scl, scl);
-        sprite.setPosition(scl*map[i][j].getX(),scl* map[i][j].getY());
+        sprite.setPosition(map[i][j].getX(), map[i][j].getY());
     }
 
     public void update(){

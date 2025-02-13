@@ -23,12 +23,12 @@ public class Animation {
         this.direcao = Consts.DIREITA;
 
         TextureRegion[][] frames = TextureRegion.split(this.texture, 32, 32);
-        int scl = 10; // redimensiona a sprint
+
 
         for (int i = 0; i < sprite.length; i++) {
             for (int j = 0; j < sprite[i].length; j++) {
                 sprite[i][j] = new Sprite(frames[i][j]);
-                sprite[i][j].setSize(scl*frames[i][j].getRegionWidth(), scl*frames[i][j].getRegionHeight());
+                sprite[i][j].setSize(frames[i][j].getRegionWidth(), frames[i][j].getRegionHeight());
             }
         }
     }

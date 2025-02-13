@@ -27,22 +27,16 @@ public class GeracaoProcedural {
 
     private final int minRoomArea = 100;
     private final int minRoomSide = 5;
-    private final int maxCorridorSideAdjascency = 0;
 
     private int seed;
 
     public GeracaoProcedural(int width, int height, int seed) {
-        rand = new Random();
+        rand = new Random(746333);
         this.seed = seed;
-        //rand.setSeed(seed);
         // melhor seed ever: 7451143
         grade = new int[width][height];
         pixmap = new Pixmap(height, width, Pixmap.Format.RGBA8888);
         rooms = new ArrayList<>();
-
-        if(saveImage) {
-            savePixmap("mansion2.png");
-        }
 
     }
 
@@ -62,6 +56,10 @@ public class GeracaoProcedural {
         createEntrances();
         posProcess();
         texture = generatePixmap();
+
+        if(saveImage) {
+            savePixmap("mansion2.png");
+        }
     }
 
     public void resetMap() {
@@ -176,7 +174,7 @@ public class GeracaoProcedural {
                     tipo = TileType.CHAO;
                 }
 
-                map[i][j] = new TileMap(tipo, true, i * 32, j * 32);
+                map[i][j] = new TileMap(tipo, i * 32, j * 32);
                 newGrade[i][j] = tipo.getCodigo();
             }
         }
@@ -223,7 +221,7 @@ public class GeracaoProcedural {
             start = Math.max(room.getStartY(), other.getStartY());
             end = Math.min(room.getEndY(), other.getEndY());
 
-            if (end - start >= maxCorridorSideAdjascency) {
+            if (end - start >= 0) {
                 // Remove parede vertical
                 for (int k = start + 1; k < end; k++) {
                     grade[room.getEndX() == other.getStartX() ? room.getEndX() : room.getStartX()][k] = 0;
@@ -236,7 +234,7 @@ public class GeracaoProcedural {
             start = Math.max(room.getStartX(), other.getStartX());
             end = Math.min(room.getEndX(), other.getEndX());
 
-            if (end - start >= maxCorridorSideAdjascency) {
+            if (end - start >= 0) {
                 // Remove parede horizontal
                 for (int k = start + 1; k < end; k++) {
                     grade[k][room.getEndY() == other.getStartY() ? room.getEndY() : room.getStartY()] = 0;

@@ -2,6 +2,7 @@ package com.mygdx.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.Collision;
 import com.mygdx.utils.Animation;
 import com.mygdx.utils.Consts;
 import com.mygdx.utils.MeuInputProcessor;
@@ -49,7 +50,9 @@ public class Entidade {
     }
 
     public void setDirecao(int direcao){
-        anim.setDirecao(direcao);
+        if(anim != null){
+            anim.setDirecao(direcao);
+        }
     }
 
     public void move(float x, float y){
@@ -59,7 +62,9 @@ public class Entidade {
         else{
             setDirecao(Consts.ESQUERDA);
         }
-        position.add(x * velocidade, y * velocidade);
+        if(!Collision.getInstance().checkCollision((int)position.x /*+ (int)(x * velocidade)*/, (int)position.y /*+ (int)(y * velocidade)*/)){
+            position.add(x * velocidade, y * velocidade);
+        }
     }
 
     public void update(float delta) {
