@@ -30,23 +30,29 @@ public class GeracaoProcedural {
 
     private int seed;
 
+    private int imageCounter = 0;
+
     public GeracaoProcedural(int width, int height, int seed) {
-        rand = new Random(746333);
+        rand = new Random(seed);
         this.seed = seed;
-        // melhor seed ever: 7451143
         grade = new int[width][height];
         pixmap = new Pixmap(height, width, Pixmap.Format.RGBA8888);
         rooms = new ArrayList<>();
-
     }
 
-    public TileMap[][] generate(){
+    public GeracaoProcedural(int width, int height, Random rand) {
+        this.rand = rand;
+        grade = new int[width][height];
+        rooms = new ArrayList<>();
+    }
+
+    public int[][] generate(){
         resetMap();
         generate(0, 0, grade.length - 1, grade[0].length - 1, rand.nextBoolean());
         generateGrafo();
         createEntrances();
         posProcess();
-        return finishMap();
+        return grade;
     }
 
     public void tccGenerate(){
@@ -55,10 +61,11 @@ public class GeracaoProcedural {
         generateGrafo();
         createEntrances();
         posProcess();
+        fineTuning();
         texture = generatePixmap();
 
         if(saveImage) {
-            savePixmap("mansion2.png");
+            savePixmap("mansionArticle.png");
         }
     }
 
@@ -152,35 +159,24 @@ public class GeracaoProcedural {
         openCorridors();
     }
 
-    private TileMap[][] finishMap(){
-        TileType tipo;
-        TileMap[][] map = new TileMap[grade.length][grade[0].length];
+    private void fineTuning(){
         boolean up, down, left, right;
-        int[][] newGrade = new int[grade.length][grade[0].length];
 
         for(int i = 0; i < grade.length; i++){
             for(int j = 0; j < grade[i].length; j++){
 
-                if(grade[i][j] == 1 || grade[i][j] == 2){
-                    right = (i > 0) && (grade[i-1][j] == 1 || grade[i-1][j] == 2);
-                    left = (i < grade.length - 1) && (grade[i+1][j] == 1 || grade[i+1][j] == 2);
-                    down = (j > 0) && (grade[i][j-1] == 1 || grade[i][j-1] == 2);
-                    up = (j < grade[i].length - 1) && (grade[i][j+1] == 1 || grade[i][j+1] == 2);
+                left = (i > 0) && (grade[i-1][j] == 1 || grade[i-1][j] == 2);
+                right = (i < grade.length - 1) && (grade[i+1][j] == 1 || grade[i+1][j] == 2);
+                down = (j > 0) && (grade[i][j-1] == 1 || grade[i][j-1] == 2);
+                up = (j < grade[i].length - 1) && (grade[i][j+1] == 1 || grade[i][j+1] == 2);
 
-                    tipo = TileType.determineType(up, down, left, right, grade[i][j] == 2);
-
+                if(!left && !right && !down && !up && grade[i][j] != 0){
+                    grade[i][j] = 0;
+                    texture = generatePixmap();
+                    imageCounter++;
                 }
-                else {
-                    tipo = TileType.CHAO;
-                }
-
-                map[i][j] = new TileMap(tipo, i * 32, j * 32);
-                newGrade[i][j] = tipo.getCodigo();
             }
         }
-
-        grade = newGrade;
-        return map;
     }
 
     private void fixUnconectedRooms(){
@@ -226,6 +222,9 @@ public class GeracaoProcedural {
                 for (int k = start + 1; k < end; k++) {
                     grade[room.getEndX() == other.getStartX() ? room.getEndX() : room.getStartX()][k] = 0;
                 }
+                /*texture = generatePixmap();
+                savePixmap(String.format("step_%03d.png", imageCounter));
+                imageCounter++;*/
             }
         }
 
@@ -239,6 +238,9 @@ public class GeracaoProcedural {
                 for (int k = start + 1; k < end; k++) {
                     grade[k][room.getEndY() == other.getStartY() ? room.getEndY() : room.getStartY()] = 0;
                 }
+                /*texture = generatePixmap();
+                savePixmap(String.format("step_%03d.png", imageCounter));
+                imageCounter++;*/
             }
         }
     }
@@ -271,6 +273,10 @@ public class GeracaoProcedural {
             if (end - start > 2) {
                 mid = start + (end - start) / 2;
                 grade[room.getEndX() == other.getStartX() ? room.getEndX() : room.getStartX()][mid] = 2;
+
+                /*texture = generatePixmap();
+                savePixmap(String.format("step_%03d.png", imageCounter));
+                imageCounter++;*/
                 return true;
             }
         }
@@ -283,6 +289,10 @@ public class GeracaoProcedural {
             if (end - start > 2) {
                 mid = start + (end - start) / 2;
                 grade[mid][room.getEndY() == other.getStartY() ? room.getEndY() : room.getStartY()] = 2;
+
+                /*texture = generatePixmap();
+                savePixmap(String.format("step_%03d.png", imageCounter));
+                imageCounter++;*/
                 return true;
             }
         }
@@ -305,7 +315,7 @@ public class GeracaoProcedural {
                         pixmap.setColor(0, 0, 0, 1);
                         break;
                     case 2:
-                        pixmap.setColor(0, 0, 1, 1);
+                        pixmap.setColor(1, 1, 1, 1);
                         break;
                     default:
                         pixmap.setColor(1, 0, 0, 1);

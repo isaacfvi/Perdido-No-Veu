@@ -62,7 +62,7 @@ public class Entidade {
         else{
             setDirecao(Consts.ESQUERDA);
         }
-        if(!Collision.getInstance().checkCollision((int)position.x /*+ (int)(x * velocidade)*/, (int)position.y /*+ (int)(y * velocidade)*/)){
+        if(!Collision.getInstance().checkCollision(new Vector2((int)position.x + (int)(x * velocidade), (int)position.y + (int)(y * velocidade)))){
             position.add(x * velocidade, y * velocidade);
         }
     }

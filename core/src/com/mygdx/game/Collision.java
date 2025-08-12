@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.entities.Entidade;
+import com.mygdx.proceduralGeneration.TileMap;
 
 import java.awt.*;
 
@@ -9,21 +11,21 @@ public class Collision {
 
     private static Collision instance;
 
-    private Array<Rectangle> walls;
+    private Array<TileMap> walls;
     private Array<Entidade> entidades;
 
 
     public Collision() {
-        this.walls = new Array<Rectangle>();
-        this.entidades = new Array<Entidade>();
+        this.walls = new Array<>();
+        this.entidades = new Array<>();
     }
 
     public void inscreverEntidade(Entidade entidade) {
         entidades.add(entidade);
     }
 
-    public void inscreverParede(Rectangle wall) {
-        //walls.add(wall);
+    public void inscreverParede(TileMap wall) {
+        walls.add(wall);
     }
 
     public static Collision getInstance(){
@@ -33,19 +35,9 @@ public class Collision {
         return instance;
     }
 
-    public boolean checkCollision(int x, int y){
-
-        System.out.println("numero de paredes: "+ walls.size);
-        for(int i = 0; i < walls.size; i++){
-            if(0 == walls.size%(i+1)){
-                System.out.println("Parede "+ i);
-                System.out.println(walls.get(i));
-                System.out.println("Posicao " + x + " " + y);
-            }
-            if(walls.get(i).contains(x, y)){
-                System.out.println("collidiu com " + walls.get(i));
-                return true;
-            }
+    public boolean checkCollision(Vector2 position) {
+        for(TileMap wall : walls){
+            if(wall.isSolid(position)){return true;}
         }
         return false;
     }

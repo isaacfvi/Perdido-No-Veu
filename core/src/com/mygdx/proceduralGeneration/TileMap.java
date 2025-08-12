@@ -1,28 +1,36 @@
 package com.mygdx.proceduralGeneration;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public class TileMap {
 
-    private TileType tileType;
 
-    private int x, y;
+    private Vector2 position;
+    private final Sprite sprite;
+    private final Rectangle hitbox;
+    private final boolean isCollidable;
 
-    public TileMap(TileType tileType, int x, int y) {
-        this.tileType = tileType;
-        this.x = x;
-        this.y = y;
+    public TileMap(Sprite sprite, Vector2 position, boolean isCollidable) {
+        this.sprite = sprite;
+        this.position = position;
+        this.hitbox = new Rectangle(position.x, position.y, sprite.getWidth(), sprite.getHeight());
+        this.sprite.setPosition(position.x, position.y);
+        this.isCollidable = isCollidable;
     }
 
-    public TileType getTileType() {
-        return tileType;
+    public Vector2 getPosition() {return position;}
+
+    public boolean isSolid(Vector2 point) {
+        return hitbox.contains(point);
     }
 
-    public int getX(){
-        return this.x;
+    public boolean isCollidable() {return isCollidable;}
+
+    public void draw(SpriteBatch batch){
+        sprite.draw(batch);
     }
-    public int getY(){
-        return this.y;
-    }
+    public void dispose(){}
 }

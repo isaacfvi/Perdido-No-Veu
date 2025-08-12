@@ -17,7 +17,7 @@ public class Camera extends Entidade{
         this.viewport = new FitViewport(3*1920, 3*1080, camera);
 
         camera.position.set(super.getPosition().x, super.getPosition().y, 0);
-        camera.zoom = 0.05f;
+        camera.zoom = 0.06f;
         camera.update();
     }
 

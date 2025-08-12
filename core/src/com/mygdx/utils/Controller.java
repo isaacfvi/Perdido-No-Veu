@@ -30,20 +30,18 @@ public class Controller {
         fantasma.setAlvo(jogador.getPosicao());
         fantasma.update(delta);
         mansion.update();
-        //verifica_colisoes();
     }
 
     public void draw(SpriteBatch batch){
-        mansion.drawFloor(batch);
+        mansion.draw(batch);
         if(jogador.isAlive()){jogador.draw(batch);}
         fantasma.draw(batch);
-        mansion.drawWalls(batch);
     }
 
     public void dispose(){
         fantasma.dispose();
         jogador.dispose();
-        //mansion.dispose();
+        mansion.dispose();
     }
 
     public Camera getCamera() {

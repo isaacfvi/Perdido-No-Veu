@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.proceduralGeneration.GeracaoProcedural;
+import com.mygdx.proceduralGeneration.RoomConnectivityValidator;
+
+import java.util.Random;
 
 public class TccScreen implements Screen {
 
@@ -14,10 +17,9 @@ public class TccScreen implements Screen {
 
     @Override
     public void show() {
-        geracao = new GeracaoProcedural(30, 40, 546843);
+        geracao = new GeracaoProcedural(40, 40, 6464);
         geracao.tccGenerate();
         batch = new SpriteBatch();
-
     }
 
     @Override
@@ -52,5 +54,22 @@ public class TccScreen implements Screen {
     @Override
     public void dispose() {
         geracao.dispose();
+    }
+
+    public void validate(){
+        int conected = 0;
+        int testes = 100000;
+        boolean isConnected;
+
+        for(int i = 0; i < testes; i++){
+            geracao = new GeracaoProcedural(30, 40, new Random().nextInt());
+            geracao.tccGenerate();
+            RoomConnectivityValidator validator = new RoomConnectivityValidator(geracao.getGrade());
+            isConnected = validator.isAllRoomsConnected();
+            if(isConnected){
+                conected++;
+            }
+        }
+        System.out.println("Quantidade conectados: " + (float)100*conected/testes + "%");
     }
 }
