@@ -13,15 +13,21 @@ public class Entidade {
     private Animation anim;
     private MeuInputProcessor meuInput;
 
+    private boolean able_to_move;
+    private Vector2 future_position;
+
 
     public Entidade(Vector2 position, int velocidade, Animation anim) {
         this.position = position;
+        this.future_position = position;
         this.velocidade = velocidade;
         this.anim = anim;
+        this.able_to_move = true;
     }
 
     public Entidade(Vector2 position, int velocidade, Animation anim, MeuInputProcessor meuInput) {
         this.position = position;
+        this.future_position = position;
         this.velocidade = velocidade;
         this.anim = anim;
         this.meuInput = meuInput;
@@ -29,6 +35,7 @@ public class Entidade {
 
     public Entidade(Vector2 position, int velocidade, MeuInputProcessor meuInput) {
         this.position = position;
+        this.future_position = position;
         this.velocidade = velocidade;
         this.meuInput = meuInput;
     }
@@ -40,6 +47,7 @@ public class Entidade {
     public Vector2 getPosition() {
         return position;
     }
+    public Vector2 getFuturePosition() { return future_position; }
 
     public MeuInputProcessor getMeuInput() {
         return meuInput;
@@ -55,6 +63,10 @@ public class Entidade {
         }
     }
 
+    public void setMovementPermition(boolean movement){
+        this.able_to_move = movement;
+    }
+
     public void move(float x, float y){
         if(x < 0){
             setDirecao(Consts.DIREITA);
@@ -62,8 +74,11 @@ public class Entidade {
         else{
             setDirecao(Consts.ESQUERDA);
         }
-        if(!Collision.getInstance().checkCollision(new Vector2((int)position.x + (int)(x * velocidade), (int)position.y + (int)(y * velocidade)))){
-            position.add(x * velocidade, y * velocidade);
+
+        future_position = position.cpy().add((int)(x * velocidade), (int)(y * velocidade));
+
+        if(able_to_move){
+            position.set(future_position);
         }
     }
 

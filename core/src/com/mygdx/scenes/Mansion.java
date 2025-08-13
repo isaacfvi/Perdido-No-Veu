@@ -15,14 +15,13 @@ public class Mansion {
     private TileMap[][] map;
     private MapAssembler assembler;
 
-    public Mansion(Assets assets) {
-        generateMap();
-    }
+    public Mansion(Assets assets) {}
 
-    public void generateMap() {
+    public Array<TileMap> generateMap() {
         this.assembler = new MapAssembler(358874);
-
         this.map = assembler.makeMap();
+
+        return assembler.getWalls();
     }
 
     public void update(){

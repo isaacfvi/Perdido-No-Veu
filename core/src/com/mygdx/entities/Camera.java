@@ -1,6 +1,7 @@
 package com.mygdx.entities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -30,11 +31,6 @@ public class Camera extends Entidade{
         super.getMeuInput().update(this, delta);
         camera.position.set(super.getPosition().x, super.getPosition().y, 0);
         camera.update();
-    }
-
-    @Override
-    public void move(float x, float y) {
-        super.move(x, y);
     }
 
     public void resize(int width, int height) {

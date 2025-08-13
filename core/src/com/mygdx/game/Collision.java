@@ -24,21 +24,20 @@ public class Collision {
         entidades.add(entidade);
     }
 
-    public void inscreverParede(TileMap wall) {
-        walls.add(wall);
-    }
+    public void setWalls(Array<TileMap> walls) { this.walls = walls; }
 
-    public static Collision getInstance(){
-        if(instance == null){
-            instance = new Collision();
+    public void update() {
+
+        for(Entidade entidade : entidades) {
+            entidade.setMovementPermition(true);
         }
-        return instance;
-    }
 
-    public boolean checkCollision(Vector2 position) {
         for(TileMap wall : walls){
-            if(wall.isSolid(position)){return true;}
+            for(Entidade entidade : entidades){
+                if(wall.isSolid(entidade.getFuturePosition())){
+                    entidade.setMovementPermition(false);
+                }
+            }
         }
-        return false;
     }
 }

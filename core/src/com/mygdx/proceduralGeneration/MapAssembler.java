@@ -14,12 +14,14 @@ public class MapAssembler {
     private GeracaoProcedural geracao;
     private Random rand;
     private TextureAtlas atlas;
+    private Array<TileMap> walls;
 
 
     public MapAssembler(int seed){
         this.rand = new Random(seed);
-        geracao = new GeracaoProcedural(40, 40, rand);
-        atlas = new TextureAtlas(Gdx.files.internal("MansionTiles.atlas"));
+        this.geracao = new GeracaoProcedural(40, 40, rand);
+        this.atlas = new TextureAtlas(Gdx.files.internal("MansionTiles.atlas"));
+        this.walls = new Array<>();
     }
 
     public TileMap[][] makeMap(){
@@ -33,13 +35,15 @@ public class MapAssembler {
 
                 } else if (grade[i][j] == 1) { // parede
                     map[i][j] = new TileMap(atlas.createSprite("Parede"), new Vector2(32 * i, 32 * j), true);
-                    Collision.getInstance().inscreverParede(map[i][j]);
+                    walls.add(map[i][j]);
                 }
             }
         }
 
         return map;
     }
+
+    public Array<TileMap> getWalls(){ return walls; }
 
     public void dispose(){atlas.dispose();}
 

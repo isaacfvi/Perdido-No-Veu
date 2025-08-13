@@ -1,9 +1,12 @@
 package com.mygdx.utils;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.entities.Camera;
 import com.mygdx.entities.Fantasma;
 import com.mygdx.entities.Jogador;
+import com.mygdx.game.Collision;
+import com.mygdx.proceduralGeneration.TileMap;
 import com.mygdx.scenes.Mansion;
 
 public class Controller {
@@ -12,6 +15,7 @@ public class Controller {
     private Fantasma fantasma;
     private Jogador jogador;
     private Camera camera;
+    private Collision collision;
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
@@ -19,6 +23,17 @@ public class Controller {
         this.fantasma = new Fantasma(assets, 35);
         this.jogador = new Jogador(meuInput, assets, 80);
         this.mansion = new Mansion(assets);
+        this.collision = new Collision();
+
+        setUp();
+    }
+
+    public void setUp(){
+        collision.setWalls(mansion.generateMap());
+
+        //collision.inscreverEntidade(fantasma);
+        collision.inscreverEntidade(jogador);
+        collision.inscreverEntidade(camera);
 
     }
 
@@ -30,6 +45,8 @@ public class Controller {
         fantasma.setAlvo(jogador.getPosicao());
         fantasma.update(delta);
         mansion.update();
+
+        collision.update();
     }
 
     public void draw(SpriteBatch batch){
