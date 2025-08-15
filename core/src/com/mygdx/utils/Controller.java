@@ -19,9 +19,9 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.camera = new Camera(meuInput, 80);
         this.fantasma = new Fantasma(assets, 35);
         this.jogador = new Jogador(meuInput, assets, 80);
+        this.camera = new Camera(jogador);
         this.mansion = new Mansion(assets);
         this.collision = new Collision();
 
@@ -33,7 +33,6 @@ public class Controller {
 
         //collision.inscreverEntidade(fantasma);
         collision.inscreverEntidade(jogador);
-        collision.inscreverEntidade(camera);
 
     }
 
