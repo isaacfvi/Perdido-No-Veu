@@ -41,7 +41,6 @@ public class Controller {
             jogador.update(delta);
             camera.update(delta);
         }
-        fantasma.setAlvo(jogador.getPosicao());
         fantasma.update(delta);
         mansion.update();
 

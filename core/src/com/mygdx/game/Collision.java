@@ -34,7 +34,7 @@ public class Collision {
 
         for(TileMap wall : walls){
             for(Entidade entidade : entidades){
-                if(wall.isSolid(entidade.getFuturePosition())){
+                if(wall.isSolid(entidade.getFuture_hitbox())){
                     entidade.setMovementPermition(false);
                 }
             }

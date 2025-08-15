@@ -14,12 +14,8 @@ public class Jogador extends Entidade{
     private boolean alive;
 
     public Jogador(MeuInputProcessor meuInput, Assets assets, int velocidade) {
-        super(new Vector2(50, 50), velocidade, new Animation("Player", assets, 2, 3), meuInput);
+        super(new Rectangle(50, 50, 10, 10), velocidade, new Animation("Player", assets, 2, 3), meuInput);
         this.alive = true;
-    }
-
-    public Vector2 getPosicao() {
-        return super.getPosition();
     }
 
     @Override

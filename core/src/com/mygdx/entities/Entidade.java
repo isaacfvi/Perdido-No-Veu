@@ -8,26 +8,26 @@ import com.mygdx.utils.Consts;
 import com.mygdx.utils.MeuInputProcessor;
 
 public class Entidade {
-    private Vector2 position;
     private int velocidade;
-    private Animation anim;
+    private final Animation anim;
     private MeuInputProcessor meuInput;
 
-    private boolean able_to_move;
-    private Vector2 future_position;
+    private boolean able_to_move = true;
+    private final Rectangle hitbox;
+    private final Rectangle future_hitbox;
 
+    private final Vector2 centerCache = new Vector2();
 
-    public Entidade(Vector2 position, int velocidade, Animation anim) {
-        this.position = position;
-        this.future_position = new Vector2(position.x, position.y);
+    public Entidade(Rectangle hitbox, int velocidade, Animation anim) {
+        this.hitbox = hitbox;
+        this.future_hitbox = new Rectangle(hitbox);
         this.velocidade = velocidade;
         this.anim = anim;
-        this.able_to_move = true;
     }
 
-    public Entidade(Vector2 position, int velocidade, Animation anim, MeuInputProcessor meuInput) {
-        this.position = position;
-        this.future_position = new Vector2(position.x, position.y);
+    public Entidade(Rectangle hitbox, int velocidade, Animation anim, MeuInputProcessor meuInput) {
+        this.hitbox = hitbox;
+        this.future_hitbox = new Rectangle(hitbox);
         this.velocidade = velocidade;
         this.anim = anim;
         this.meuInput = meuInput;
@@ -38,16 +38,19 @@ public class Entidade {
     }
 
     public Vector2 getPosition() {
-        return position;
+        return centerCache;
     }
-    public Vector2 getFuturePosition() { return future_position; }
+
+    public Rectangle getFuture_hitbox() {
+        return future_hitbox;
+    }
 
     public MeuInputProcessor getMeuInput() {
         return meuInput;
     }
 
     public void addPosition(Vector2 position) {
-        this.position.add(position);
+        this.hitbox.setPosition(hitbox.x + position.x, hitbox.y + position.y);
     }
 
     public void setDirecao(int direcao){
@@ -68,10 +71,10 @@ public class Entidade {
             setDirecao(Consts.ESQUERDA);
         }
 
-        future_position.set(position).add(x * velocidade, y * velocidade);
+        future_hitbox.setPosition(hitbox.x + x * velocidade, hitbox.y + y * velocidade);
 
         if(able_to_move){
-            position.set(future_position);
+            hitbox.set(future_hitbox);
         }
 
     }
@@ -81,12 +84,12 @@ public class Entidade {
         if (meuInput != null && !(meuInput.isMoving())) {
             anim.reset();
         }
-
+        hitbox.getCenter(centerCache);
         anim.update(delta);
     }
 
     public void draw(SpriteBatch batch){
-        anim.draw(batch, position);
+        anim.draw(batch, centerCache);
     }
 
     public void dispose(){

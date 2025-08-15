@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public class TileMap {
 
-
     private Vector2 position;
     private final Sprite sprite;
     private final Rectangle hitbox;
@@ -23,8 +22,8 @@ public class TileMap {
 
     public Vector2 getPosition() {return position;}
 
-    public boolean isSolid(Vector2 point) {
-        return hitbox.contains(point);
+    public boolean isSolid(Rectangle hitbox) {
+        return this.hitbox.overlaps(hitbox);
     }
 
     public boolean isCollidable() {return isCollidable;}
