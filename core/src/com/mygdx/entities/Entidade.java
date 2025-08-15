@@ -1,8 +1,8 @@
 package com.mygdx.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.Collision;
 import com.mygdx.utils.Animation;
 import com.mygdx.utils.Consts;
 import com.mygdx.utils.MeuInputProcessor;
@@ -19,7 +19,7 @@ public class Entidade {
 
     public Entidade(Vector2 position, int velocidade, Animation anim) {
         this.position = position;
-        this.future_position = position;
+        this.future_position = new Vector2(position.x, position.y);
         this.velocidade = velocidade;
         this.anim = anim;
         this.able_to_move = true;
@@ -27,16 +27,9 @@ public class Entidade {
 
     public Entidade(Vector2 position, int velocidade, Animation anim, MeuInputProcessor meuInput) {
         this.position = position;
-        this.future_position = position;
+        this.future_position = new Vector2(position.x, position.y);
         this.velocidade = velocidade;
         this.anim = anim;
-        this.meuInput = meuInput;
-    }
-
-    public Entidade(Vector2 position, int velocidade, MeuInputProcessor meuInput) {
-        this.position = position;
-        this.future_position = position;
-        this.velocidade = velocidade;
         this.meuInput = meuInput;
     }
 
@@ -75,11 +68,12 @@ public class Entidade {
             setDirecao(Consts.ESQUERDA);
         }
 
-        future_position = position.cpy().add((int)(x * velocidade), (int)(y * velocidade));
+        future_position.set(position).add(x * velocidade, y * velocidade);
 
         if(able_to_move){
             position.set(future_position);
         }
+
     }
 
     public void update(float delta) {
