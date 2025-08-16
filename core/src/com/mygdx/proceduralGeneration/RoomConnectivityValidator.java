@@ -16,7 +16,6 @@ public class RoomConnectivityValidator {
     }
 
     public boolean isAllRoomsConnected() {
-        // Encontra o primeiro chão (0) ou área especial (2) para iniciar a busca
         int startX = -1, startY = -1;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -29,12 +28,10 @@ public class RoomConnectivityValidator {
             if (startX != -1) break;
         }
 
-        if (startX == -1) return true; // Não há áreas transitáveis
+        if (startX == -1) return true;
 
-        // Realiza DFS
         dfs(startX, startY);
 
-        // Verifica se todos os 0s e 2s foram visitados
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if ((grade[i][j] == 0 || grade[i][j] == 2) && !visited[i][j]) {

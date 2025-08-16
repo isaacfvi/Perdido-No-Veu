@@ -30,6 +30,8 @@ public class GeracaoProcedural {
 
     private int seed;
 
+    private static final int MAX_RETRIES = 10;
+
     private int imageCounter = 0;
 
     public GeracaoProcedural(int width, int height, int seed) {
@@ -46,12 +48,21 @@ public class GeracaoProcedural {
         rooms = new ArrayList<>();
     }
 
-    public int[][] generate(){
-        resetMap();
-        generate(0, 0, grade.length - 1, grade[0].length - 1, rand.nextBoolean());
-        generateGrafo();
-        createEntrances();
-        posProcess();
+    public int[][] generate() {
+        int attempts = 0;
+        do {
+            resetMap();
+            generate(0, 0, grade.length - 1, grade[0].length - 1, rand.nextBoolean());
+            generateGrafo();
+            createEntrances();
+            posProcess();
+
+            if (new RoomConnectivityValidator(grade).isAllRoomsConnected()) {
+                return grade;
+            }
+            attempts++;
+        } while (attempts < MAX_RETRIES);
+
         return grade;
     }
 
