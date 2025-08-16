@@ -15,10 +15,11 @@ public class Mansion {
     private TileMap[][] map;
     private MapAssembler assembler;
 
-    public Mansion(Assets assets) {}
+    public Mansion(Assets assets) {
+        this.assembler = new MapAssembler(358874, assets.getAtlas());
+    }
 
     public Array<TileMap> generateMap() {
-        this.assembler = new MapAssembler(358874);
         this.map = assembler.makeMap();
 
         return assembler.getWalls();

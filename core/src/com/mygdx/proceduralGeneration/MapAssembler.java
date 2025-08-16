@@ -17,10 +17,10 @@ public class MapAssembler {
     private Array<TileMap> walls;
 
 
-    public MapAssembler(int seed){
+    public MapAssembler(int seed, TextureAtlas atlas) {
         this.rand = new Random(seed);
         this.geracao = new GeracaoProcedural(40, 40, rand);
-        this.atlas = new TextureAtlas(Gdx.files.internal("MansionTiles.atlas"));
+        this.atlas = atlas;
         this.walls = new Array<>();
     }
 
