@@ -25,15 +25,10 @@ public class Controller {
         this.mansion = new Mansion(assets);
         this.collision = new Collision();
 
-        setUp();
-    }
-
-    public void setUp(){
-        collision.setWalls(mansion.generateMap());
+        collision.setWalls(mansion.generateMap(assets));
 
         //collision.inscreverEntidade(fantasma);
         collision.inscreverEntidade(jogador);
-
     }
 
     public void update(float delta){

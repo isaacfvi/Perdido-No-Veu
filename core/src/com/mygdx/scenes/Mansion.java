@@ -13,14 +13,13 @@ import com.mygdx.utils.Assets;
 public class Mansion {
 
     private TileMap[][] map;
-    private MapAssembler assembler;
 
-    public Mansion(Assets assets) {
-        this.assembler = new MapAssembler(358874, assets.getAtlas());
-    }
+    public Mansion(Assets assets) {}
 
-    public Array<TileMap> generateMap() {
-        this.map = assembler.makeMap();
+    public Array<TileMap> generateMap(Assets assets) {
+        MapAssembler assembler = new MapAssembler(358874);
+
+        this.map = assembler.makeMap(assets);
 
         return assembler.getWalls();
     }
@@ -36,10 +35,6 @@ public class Mansion {
                 tile.draw(batch);
             }
         }
-    }
-
-    public void dispose(){
-        assembler.dispose();
     }
 
 }

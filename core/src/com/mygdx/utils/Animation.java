@@ -17,14 +17,14 @@ public class Animation {
 
     private int direcao;
 
-    public Animation(Assets assets, String name) {
+    public Animation(Assets assets, String name, int col, int rows) {
         this.direcao = Consts.DIREITA;
 
-        sprite = assets.getSprites(name);
+        sprite = assets.getSprites("Entidades", name, col, rows);
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(0, 0, sprite[0][0].getRegionWidth(), sprite[0][0].getRegionHeight());
+        return new Rectangle(0, 0, sprite[0][0].getWidth(), sprite[0][0].getHeight());
     }
 
     public void setDirecao(int direcao) {

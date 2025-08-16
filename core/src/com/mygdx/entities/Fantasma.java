@@ -14,7 +14,7 @@ public class Fantasma extends Entidade {
     private Vector2 alvo;
 
     public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY) {
-        Animation anim = new Animation(assets, "Fantasma");
+        Animation anim = new Animation(assets, "Fantasma", 6, 2);
         Rectangle hitbox = anim.getBounds();
         hitbox.setCenter(iniX, iniY);
         hitbox.setSize(hitbox.width - 20, hitbox.height - 12);

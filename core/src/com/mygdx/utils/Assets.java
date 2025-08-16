@@ -16,6 +16,7 @@ public class Assets {
 
         loadSounds();
         loadTextures();
+        assetManager.finishLoading();
     }
 
     public void loadSounds(){
@@ -23,32 +24,29 @@ public class Assets {
     }
 
     public void loadTextures(){
-        assetManager.load("Fantasma.png", Texture.class);
-        assetManager.load("MansionTiles.png", Texture.class);
-        assetManager.load("Player.png", Texture.class);
         assetManager.load("MansionTiles.atlas", TextureAtlas.class);
-        assetManager.finishLoading();
+        assetManager.load("Entidades.atlas", TextureAtlas.class);
     }
 
-    public Texture getTexture(String name){
-        return assetManager.get(name + ".png", Texture.class);
-    }
+    public TextureAtlas getAtlas(String name){ return assetManager.get(name + ".atlas", TextureAtlas.class); }
 
-    public TextureAtlas getAtlas(){ return assetManager.get("MansionTiles.atlas", TextureAtlas.class); }
+    public Sprite getSpriteFromAtlas(String atlasPath, String resourceName){ return getAtlas(atlasPath).createSprite(resourceName);}
 
-    public Sprite[][] getSprites(String name){
-        TextureRegion[][] frames = TextureRegion.split(this.getTexture(name), 32, 32);
+    public TextureRegion getTextureFromAtlas(String atlasPath, String resourceName){ return getAtlas(atlasPath).findRegion(resourceName);}
 
-        Sprite[][] sprite = new Sprite[frames.length][frames[0].length];
+    public Sprite[][] getSprites(String atlasPath, String resourceName, int cols, int rows){
+        TextureRegion region = getTextureFromAtlas(atlasPath, resourceName);
 
-        for (int i = 0; i < sprite.length; i++) {
-            for (int j = 0; j < sprite[i].length; j++) {
-                sprite[i][j] = new Sprite(frames[i][j]);
-                sprite[i][j].setSize(frames[i][j].getRegionWidth(), frames[i][j].getRegionHeight());
+        TextureRegion[][] frames = region.split(region.getRegionWidth() / cols, region.getRegionHeight() / rows);
+
+        Sprite[][] sprites = new Sprite[frames.length][frames[0].length];
+        for (int i = 0; i < sprites.length; i++) {
+            for (int j = 0; j < sprites[i].length; j++) {
+                sprites[i][j] = new Sprite(frames[i][j]);
+                sprites[i][j].setSize(32, 32);
             }
         }
-
-        return sprite;
+        return sprites;
     }
 
     public Sound getSound(String name){
