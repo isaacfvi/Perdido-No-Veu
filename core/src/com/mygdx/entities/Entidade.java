@@ -77,7 +77,7 @@ public class Entidade {
         this.ableMoveY = movement;
     }
 
-    public void move(float x, float y){
+    public void move(float x, float y, float delta){
         if (x != 0) setDirecao(x < 0 ? Consts.DIREITA : Consts.ESQUERDA);
 
         if (x != 0 && y != 0) {
@@ -88,7 +88,7 @@ public class Entidade {
         if(ableMoveX) hitbox.x += nextMoviment.x;
         if(ableMoveY) hitbox.y += nextMoviment.y;
 
-        nextMoviment.set(x * velocidade, y * velocidade);
+        nextMoviment.set(x * velocidade * delta, y * velocidade * delta);
 
     }
 

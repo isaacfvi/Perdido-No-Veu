@@ -79,10 +79,10 @@ public class MeuInputProcessor implements InputProcessor {
     }
 
     public void update(Entidade entity, float delta) {
-        float deltaX = (moviment[0] ? -delta : 0) + (moviment[1] ? delta : 0);
-        float deltaY = (moviment[2] ? delta : 0) + (moviment[3] ? -delta : 0);
+        float deltaX = (moviment[0] ? -1 : 0) + (moviment[1] ? 1 : 0);
+        float deltaY = (moviment[2] ? 1 : 0) + (moviment[3] ? -1 : 0);
         if (deltaX != 0 || deltaY != 0) {
-            entity.move(deltaX, deltaY);
+            entity.move(deltaX, deltaY, delta);
         }
 
     }

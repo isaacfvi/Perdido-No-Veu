@@ -27,6 +27,9 @@ public class Fantasma extends Entidade {
 
     public void update(float delta){
         super.update(delta);
+
+        super.move(-1, 1, delta);
+
     }
 
     public void onCollide(Entidade entidade) {}
