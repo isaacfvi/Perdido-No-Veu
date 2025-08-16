@@ -12,22 +12,25 @@ public class Entidade {
     private final Animation anim;
     private MeuInputProcessor meuInput;
 
-    private boolean able_to_move = true;
+    private boolean ableMoveX = true;
+    private boolean ableMoveY = true;
+
     private final Rectangle hitbox;
-    private final Rectangle future_hitbox;
+    private final Rectangle futureHitbox;
 
     private final Vector2 centerCache = new Vector2();
+    private final Vector2 nextMoviment = new Vector2();
 
     public Entidade(Rectangle hitbox, int velocidade, Animation anim) {
         this.hitbox = hitbox;
-        this.future_hitbox = new Rectangle(hitbox);
+        this.futureHitbox = new Rectangle(hitbox);
         this.velocidade = velocidade;
         this.anim = anim;
     }
 
     public Entidade(Rectangle hitbox, int velocidade, Animation anim, MeuInputProcessor meuInput) {
         this.hitbox = hitbox;
-        this.future_hitbox = new Rectangle(hitbox);
+        this.futureHitbox = new Rectangle(hitbox);
         this.velocidade = velocidade;
         this.anim = anim;
         this.meuInput = meuInput;
@@ -41,16 +44,18 @@ public class Entidade {
         return centerCache;
     }
 
-    public Rectangle getFuture_hitbox() {
-        return future_hitbox;
+    public Rectangle getFutureHitboxX() {
+        futureHitbox.setPosition(hitbox.x + nextMoviment.x, hitbox.y);
+        return futureHitbox;
+    }
+
+    public Rectangle getFutureHitboxY() {
+        futureHitbox.setPosition(hitbox.x, hitbox.y + nextMoviment.y);
+        return futureHitbox;
     }
 
     public MeuInputProcessor getMeuInput() {
         return meuInput;
-    }
-
-    public void addPosition(Vector2 position) {
-        this.hitbox.setPosition(hitbox.x + position.x, hitbox.y + position.y);
     }
 
     public void setDirecao(int direcao){
@@ -59,23 +64,25 @@ public class Entidade {
         }
     }
 
-    public void setMovementPermition(boolean movement){
-        this.able_to_move = movement;
+    public void setMovementPermitionX(boolean movement){
+        this.ableMoveX = movement;
+    }
+    public void setMovementPermitionY(boolean movement){
+        this.ableMoveY = movement;
     }
 
     public void move(float x, float y){
-        if(x < 0){
-            setDirecao(Consts.DIREITA);
-        }
-        else{
-            setDirecao(Consts.ESQUERDA);
+        if (x != 0) setDirecao(x < 0 ? Consts.DIREITA : Consts.ESQUERDA);
+
+        if (x != 0 && y != 0) {
+            x *= 0.7071f;
+            y *= 0.7071f;
         }
 
-        future_hitbox.setPosition(hitbox.x + x * velocidade, hitbox.y + y * velocidade);
+        if(ableMoveX) hitbox.x += nextMoviment.x;
+        if(ableMoveY) hitbox.y += nextMoviment.y;
 
-        if(able_to_move){
-            hitbox.set(future_hitbox);
-        }
+        nextMoviment.set(x * velocidade, y * velocidade);
 
     }
 

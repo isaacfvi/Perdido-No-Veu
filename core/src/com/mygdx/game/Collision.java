@@ -1,11 +1,8 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.entities.Entidade;
 import com.mygdx.proceduralGeneration.TileMap;
-
-import java.awt.*;
 
 public class Collision {
 
@@ -29,14 +26,14 @@ public class Collision {
     public void update() {
 
         for(Entidade entidade : entidades) {
-            entidade.setMovementPermition(true);
+            entidade.setMovementPermitionX(true);
+            entidade.setMovementPermitionY(true);
         }
 
         for(TileMap wall : walls){
             for(Entidade entidade : entidades){
-                if(wall.isSolid(entidade.getFuture_hitbox())){
-                    entidade.setMovementPermition(false);
-                }
+                if(wall.isSolid(entidade.getFutureHitboxX())) entidade.setMovementPermitionX(false);
+                if(wall.isSolid(entidade.getFutureHitboxY())) entidade.setMovementPermitionY(false);
             }
         }
     }
