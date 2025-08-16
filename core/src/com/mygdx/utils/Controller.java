@@ -53,12 +53,6 @@ public class Controller {
         fantasma.draw(batch);
     }
 
-    public void dispose(){
-        fantasma.dispose();
-        jogador.dispose();
-        mansion.dispose();
-    }
-
     public Camera getCamera() {
         return camera;
     }

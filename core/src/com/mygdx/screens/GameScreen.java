@@ -62,6 +62,5 @@ public class GameScreen implements Screen {
     public void dispose() {
         batch.dispose();
         assets.dispose();
-        controller.dispose();
     }
 }

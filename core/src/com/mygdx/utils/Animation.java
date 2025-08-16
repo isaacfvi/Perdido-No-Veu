@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Animation {
 
-    private Texture texture;
     private Sprite[][] sprite;
 
     private int currentframe;
@@ -18,20 +17,10 @@ public class Animation {
 
     private int direcao;
 
-    public Animation(String texture, Assets assets, int spriteX, int spriteY) {
-        this.texture = assets.getTexture(texture);
-        this.sprite = new Sprite[spriteX][spriteY];
+    public Animation(Assets assets, String name) {
         this.direcao = Consts.DIREITA;
 
-        TextureRegion[][] frames = TextureRegion.split(this.texture, 32, 32);
-
-
-        for (int i = 0; i < sprite.length; i++) {
-            for (int j = 0; j < sprite[i].length; j++) {
-                sprite[i][j] = new Sprite(frames[i][j]);
-                sprite[i][j].setSize(frames[i][j].getRegionWidth(), frames[i][j].getRegionHeight());
-            }
-        }
+        sprite = assets.getSprites(name);
     }
 
     public Rectangle getBounds() {
@@ -59,11 +48,4 @@ public class Animation {
         sprite[direcao][currentframe].setPosition(pos.x - sprite[direcao][currentframe].getWidth()/2, pos.y - sprite[direcao][currentframe].getHeight()/2);
         sprite[direcao][currentframe].draw(batch);
     }
-
-    public void dispose() {
-        texture.dispose();
-    }
-
-
-
 }

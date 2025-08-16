@@ -98,8 +98,4 @@ public class Entidade {
     public void draw(SpriteBatch batch){
         anim.draw(batch, centerCache);
     }
-
-    public void dispose(){
-        anim.dispose();
-    }
 }

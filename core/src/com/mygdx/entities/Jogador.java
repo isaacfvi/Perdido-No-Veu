@@ -14,7 +14,7 @@ public class Jogador extends Entidade{
     private boolean alive;
 
     public static Jogador create(MeuInputProcessor meuInput, Assets assets, int velocidade, float iniX, float iniY) {
-        Animation anim = new Animation("Player", assets, 2, 3);
+        Animation anim = new Animation(assets, "Player");
         Rectangle hitbox = anim.getBounds();
         hitbox.setCenter(iniX, iniY);
         hitbox.setSize(hitbox.width - 20, hitbox.height - 12);
@@ -34,10 +34,6 @@ public class Jogador extends Entidade{
 
     public void draw(SpriteBatch batch) {
         super.draw(batch);
-    }
-
-    public void dispose(){
-        super.dispose();
     }
 
     public boolean isAlive() {
