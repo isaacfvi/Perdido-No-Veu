@@ -54,6 +54,12 @@ public class Entidade {
         return futureHitbox;
     }
 
+    public Rectangle getHitbox() { return hitbox; }
+
+    public boolean checkCollision(Rectangle other) {
+        return hitbox.overlaps(other);
+    }
+
     public MeuInputProcessor getMeuInput() {
         return meuInput;
     }
@@ -94,6 +100,8 @@ public class Entidade {
         hitbox.getCenter(centerCache);
         anim.update(delta);
     }
+
+    public void onCollide(Entidade other) {}
 
     public void draw(SpriteBatch batch){
         anim.draw(batch, centerCache);

@@ -19,15 +19,15 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.fantasma = Fantasma.create(assets, 35, 50, 50);
         this.jogador = Jogador.create(meuInput, assets, 80, 50, 50);
+        this.fantasma = Fantasma.create(assets, 35, 150, 150, jogador);
         this.camera = new Camera(jogador);
         this.mansion = new Mansion(assets);
         this.collision = new Collision();
 
         collision.setWalls(mansion.generateMap(assets));
 
-        //collision.inscreverEntidade(fantasma);
+        collision.inscreverEntidade(fantasma);
         collision.inscreverEntidade(jogador);
     }
 

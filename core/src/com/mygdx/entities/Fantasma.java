@@ -10,34 +10,29 @@ import com.mygdx.utils.Consts;
 
 public class Fantasma extends Entidade {
 
-    private byte geral_state;
-    private Vector2 alvo;
+    Jogador jogador;
 
-    public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY) {
+    public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY, Jogador jogador) {
         Animation anim = new Animation(assets, "Fantasma", 6, 2);
         Rectangle hitbox = anim.getBounds();
         hitbox.setCenter(iniX, iniY);
         hitbox.setSize(hitbox.width - 20, hitbox.height - 12);
-        return new Fantasma(hitbox, velocidade, anim);
+        return new Fantasma(hitbox, velocidade, anim, jogador);
     }
 
-    public Fantasma(Rectangle hitbox, int velocidade, Animation anim) {
+    public Fantasma(Rectangle hitbox, int velocidade, Animation anim, Jogador jogador) {
         super(hitbox, velocidade, anim);
+        this.jogador = jogador;
     }
 
     public void update(float delta){
         super.update(delta);
     }
 
-    public void setAlvo(Vector2 alvo) {
-        this.alvo = alvo;
-    }
+    public void onCollide(Entidade entidade) {}
 
     public void draw(SpriteBatch batch) {
         super.draw(batch);
     }
 
-    private void patrulha(float delta, Vector2 alvo){
-
-    }
 }

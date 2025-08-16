@@ -32,6 +32,12 @@ public class Jogador extends Entidade{
         super.getMeuInput().update(this, delta);
     }
 
+    public void onCollide(Entidade other) {
+        if(other instanceof Fantasma){
+            died();
+        }
+    }
+
     public void draw(SpriteBatch batch) {
         super.draw(batch);
     }
