@@ -13,8 +13,16 @@ public class Fantasma extends Entidade {
     private byte geral_state;
     private Vector2 alvo;
 
-    public Fantasma(Assets assets, int velocidade) {
-        super(new Rectangle(0, 0, 1, 1), velocidade, new Animation("Fantasma", assets, 2, 6));
+    public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY) {
+        Animation anim = new Animation("Fantasma", assets, 2, 6);
+        Rectangle hitbox = anim.getBounds();
+        hitbox.setCenter(iniX, iniY);
+        hitbox.setSize(hitbox.width - 20, hitbox.height - 12);
+        return new Fantasma(hitbox, velocidade, anim);
+    }
+
+    public Fantasma(Rectangle hitbox, int velocidade, Animation anim) {
+        super(hitbox, velocidade, anim);
     }
 
     public void update(float delta){

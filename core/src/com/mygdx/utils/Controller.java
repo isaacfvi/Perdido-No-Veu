@@ -19,8 +19,8 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.fantasma = new Fantasma(assets, 35);
-        this.jogador = new Jogador(meuInput, assets, 80);
+        this.fantasma = Fantasma.create(assets, 35, 50, 50);
+        this.jogador = Jogador.create(meuInput, assets, 80, 50, 50);
         this.camera = new Camera(jogador);
         this.mansion = new Mansion(assets);
         this.collision = new Collision();

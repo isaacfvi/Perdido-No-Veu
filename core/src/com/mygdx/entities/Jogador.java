@@ -13,8 +13,16 @@ public class Jogador extends Entidade{
 
     private boolean alive;
 
-    public Jogador(MeuInputProcessor meuInput, Assets assets, int velocidade) {
-        super(new Rectangle(50, 50, 10, 10), velocidade, new Animation("Player", assets, 2, 3), meuInput);
+    public static Jogador create(MeuInputProcessor meuInput, Assets assets, int velocidade, float iniX, float iniY) {
+        Animation anim = new Animation("Player", assets, 2, 3);
+        Rectangle hitbox = anim.getBounds();
+        hitbox.setCenter(iniX, iniY);
+        hitbox.setSize(hitbox.width - 20, hitbox.height - 12);
+        return new Jogador(hitbox, velocidade, anim, meuInput);
+    }
+
+    private Jogador(Rectangle hitbox, int velocidade, Animation anim, MeuInputProcessor meuInput) {
+        super(hitbox, velocidade, anim, meuInput);
         this.alive = true;
     }
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Animation {
@@ -31,6 +32,10 @@ public class Animation {
                 sprite[i][j].setSize(frames[i][j].getRegionWidth(), frames[i][j].getRegionHeight());
             }
         }
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(0, 0, sprite[0][0].getRegionWidth(), sprite[0][0].getRegionHeight());
     }
 
     public void setDirecao(int direcao) {
