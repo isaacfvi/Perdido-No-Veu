@@ -28,6 +28,7 @@ public class Mansion {
 
     }
 
+    public TileMap[][] getMap() { return map; }
 
     public void draw(SpriteBatch batch){
         for (TileMap[] tileMaps : map) {
