@@ -38,10 +38,6 @@ public class Jogador extends Entidade{
         }
     }
 
-    public void draw(SpriteBatch batch) {
-        super.draw(batch);
-    }
-
     public boolean isAlive() {
         return alive;
     }

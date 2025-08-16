@@ -11,6 +11,7 @@ import com.mygdx.utils.Consts;
 public class Fantasma extends Entidade {
 
     Jogador jogador;
+    Vector2 dir = new Vector2();
 
     public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY, Jogador jogador) {
         Animation anim = new Animation(assets, "Fantasma", 6, 2);
@@ -27,15 +28,11 @@ public class Fantasma extends Entidade {
 
     public void update(float delta){
         super.update(delta);
-
-        super.move(-1, 1, delta);
-
+        super.move(dir.set(-1, 1), delta);
     }
 
-    public void onCollide(Entidade entidade) {}
+    /*public Vector2 calcularProximoPassoAStar(TileMap mapa, Vector2 start, Vector2 target) {
 
-    public void draw(SpriteBatch batch) {
-        super.draw(batch);
-    }
+    }*/
 
 }

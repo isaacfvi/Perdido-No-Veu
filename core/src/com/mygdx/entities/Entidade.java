@@ -77,18 +77,14 @@ public class Entidade {
         this.ableMoveY = movement;
     }
 
-    public void move(float x, float y, float delta){
-        if (x != 0) setDirecao(x < 0 ? Consts.DIREITA : Consts.ESQUERDA);
-
-        if (x != 0 && y != 0) {
-            x *= 0.7071f;
-            y *= 0.7071f;
-        }
+    public void move(Vector2 dir, float delta){
+        if (dir.x != 0) setDirecao(dir.x < 0 ? Consts.DIREITA : Consts.ESQUERDA);
+        dir.nor();
 
         if(ableMoveX) hitbox.x += nextMoviment.x;
         if(ableMoveY) hitbox.y += nextMoviment.y;
 
-        nextMoviment.set(x * velocidade * delta, y * velocidade * delta);
+        nextMoviment.set(dir.x * velocidade * delta, dir.y * velocidade * delta);
 
     }
 
