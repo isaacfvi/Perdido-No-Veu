@@ -1,7 +1,7 @@
 Entidades.png
-size:2048,2048
+size:512,128
 repeat:none
 Fantasma
-bounds:2,644,1920,640
+bounds:2,2,192,64
 Player
-bounds:2,2,960,640
+bounds:196,2,96,64
