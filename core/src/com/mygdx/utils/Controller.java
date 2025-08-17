@@ -21,11 +21,9 @@ public class Controller {
         this.mansion = new Mansion(jogador);
 
         Collision collision = Collision.getInstance();
-        mansion.generateMap(assets);
+        collision.setUpMap(mansion.getMap(assets));
 
-        collision.setUpMap(mansion.getMap());
-
-        this.fantasma = Fantasma.create(assets, 90, 150, 150, jogador, mansion.getMap());
+        this.fantasma = Fantasma.create(assets, 90, 150, 150, jogador, mansion.getMap(null));
 
         collision.inscreverEntidade(fantasma);
         collision.inscreverEntidade(jogador);

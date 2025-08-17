@@ -30,13 +30,13 @@ public class Mansion {
         this.jogador = jogador;
     }
 
-    public Array<TileMap> generateMap(Assets assets) {
+    public TileMap[][] generateMap(Assets assets) {
         MapAssembler assembler = new MapAssembler(358874);
 
         this.map = assembler.makeMap(assets);
         this.floors = assembler.getFloors();
 
-        return assembler.getWalls();
+        return map;
     }
 
     public void update(float delta){
@@ -52,7 +52,10 @@ public class Mansion {
         }
     }
 
-    public TileMap[][] getMap() { return map; }
+    public TileMap[][] getMap(Assets assets) {
+        if(map != null) return map;
+        else return generateMap(assets);
+    }
 
     public void draw(SpriteBatch batch){
         for (TileMap[] tileMaps : map) {
