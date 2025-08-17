@@ -14,7 +14,7 @@ public class Pathfinding {
     Fantasma fantasma;
     TileMap[][] map;
     Vector2 dir, aux = new Vector2();
-    Timer timer = new Timer(0.5f);
+    Timer timer = new Timer(0.2f);
 
     Node[][] nodes; // grade fixa de nodes
 
