@@ -1,12 +1,10 @@
 package com.mygdx.utils;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.entities.Camera;
 import com.mygdx.entities.Fantasma;
 import com.mygdx.entities.Jogador;
 import com.mygdx.game.Collision;
-import com.mygdx.proceduralGeneration.TileMap;
 import com.mygdx.scenes.Mansion;
 
 public class Controller {

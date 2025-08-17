@@ -94,12 +94,13 @@ public class Entidade {
             anim.reset();
         }
         hitbox.getCenter(centerCache);
-        anim.update(delta);
+
+        if(anim != null) anim.update(delta);
     }
 
     public void onCollide(Entidade other) {}
 
     public void draw(SpriteBatch batch){
-        anim.draw(batch, centerCache);
+        if(anim != null) anim.draw(batch, centerCache);
     }
 }
