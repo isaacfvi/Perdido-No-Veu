@@ -21,7 +21,7 @@ public class TileMap {
     }
 
     public boolean isSolid(Rectangle hitbox) {
-        return this.hitbox.overlaps(hitbox);
+        return this.hitbox.overlaps(hitbox) && isCollidable;
     }
 
     public Rectangle getHitbox() { return hitbox; }

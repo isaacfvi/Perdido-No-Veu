@@ -13,16 +13,17 @@ public class Controller {
     private Fantasma fantasma;
     private Jogador jogador;
     private Camera camera;
-    private Collision collision;
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
         this.jogador = Jogador.create(meuInput, assets, 80, 50, 50);
         this.camera = new Camera(jogador);
         this.mansion = new Mansion(jogador);
-        this.collision = new Collision();
 
-        collision.setWalls(mansion.generateMap(assets));
+        Collision collision = Collision.getInstance();
+        mansion.generateMap(assets);
+
+        collision.setUpMap(mansion.getMap());
 
         this.fantasma = Fantasma.create(assets, 90, 150, 150, jogador, mansion.getMap());
 
@@ -37,8 +38,6 @@ public class Controller {
         }
         fantasma.update(delta);
         mansion.update(delta);
-
-        collision.update();
     }
 
     public void draw(SpriteBatch batch){

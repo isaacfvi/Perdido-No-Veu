@@ -12,6 +12,7 @@ import java.awt.*;
 public class Jogador extends Entidade{
 
     private boolean alive;
+    private MeuInputProcessor meuInput;
 
     public static Jogador create(MeuInputProcessor meuInput, Assets assets, int velocidade, float iniX, float iniY) {
         Animation anim = new Animation(assets, "Player", 3, 2);
@@ -22,14 +23,17 @@ public class Jogador extends Entidade{
     }
 
     private Jogador(Rectangle hitbox, int velocidade, Animation anim, MeuInputProcessor meuInput) {
-        super(hitbox, velocidade, anim, meuInput);
+        super(hitbox, velocidade, anim);
+        this.meuInput = meuInput;
         this.alive = true;
     }
 
     @Override
     public void update(float delta){
         super.update(delta);
-        super.getMeuInput().update(this, delta);
+        if (meuInput != null && !(meuInput.isMoving())) super.animReset();
+
+        meuInput.update(this, delta);
     }
 
     public void onCollide(Entidade other) {

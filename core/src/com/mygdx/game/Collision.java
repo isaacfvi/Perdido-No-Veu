@@ -1,52 +1,61 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.entities.Entidade;
-import com.mygdx.entities.Fantasma;
-import com.mygdx.entities.Jogador;
 import com.mygdx.proceduralGeneration.TileMap;
+
+import java.util.ArrayList;
 
 public class Collision {
 
     private static Collision instance;
 
-    private Array<TileMap> walls;
-    private Array<Entidade> entidades;
+    private TileMap[][] map;
+    private ArrayList<Entidade> entities;
 
+    private int tileWidth, tileHeight;
 
-    public Collision() {
-        this.walls = new Array<>();
-        this.entidades = new Array<>();
+    private Collision() {
+        entities = new ArrayList<>();
     }
 
-    public void inscreverEntidade(Entidade entidade) {
-        entidades.add(entidade);
+    public static Collision getInstance() {
+        if (instance == null) {
+            instance = new Collision();
+        }
+        return instance;
     }
 
-    public void setWalls(Array<TileMap> walls) { this.walls = walls; }
+    public void setUpMap(TileMap[][] map) {
+        this.map = map;
 
-    public void update() {
-        Entidade e1, e2;
+        this.tileWidth = (int)map[0][0].getHitbox().width;
+        this.tileHeight = (int)map[0][0].getHitbox().height;
+    }
 
-        for(int i = 0; i < entidades.size; i++){
-            e1 = entidades.get(i);
-            e1.setMovementPermitionX(true);
-            e1.setMovementPermitionY(true);
+    public void inscreverEntidade(Entidade entidade) { entities.add(entidade); }
 
-            for(int j = i + 1; j < entidades.size; j++){
-                e2 = entidades.get(j);
+    public boolean checkMapCollision(Rectangle hitbox) {
 
-                if(e1.checkCollision(e2.getFutureHitboxX()) || e1.checkCollision(e2.getFutureHitboxY())){
-                    e1.onCollide(e2);
-                    e2.onCollide(e1);
-                }
+        int startX = Math.max(0, (int)(hitbox.x / tileWidth));
+        int startY = Math.max(0, (int)(hitbox.y / tileHeight));
+        int endX = Math.min(map.length-1, (int)((hitbox.x + hitbox.width) / tileWidth));
+        int endY = Math.min(map[0].length-1, (int)((hitbox.y + hitbox.height) / tileHeight));
+
+        for(int y = startY; y <= endY; y++) {
+            for(int x = startX; x <= endX; x++) {
+                if(map[x][y].isSolid(hitbox)) return false;
             }
         }
+        return true;
+    }
 
-        for(TileMap wall : walls){
-            for(Entidade entidade : entidades){
-                if(wall.isSolid(entidade.getFutureHitboxX())) entidade.setMovementPermitionX(false);
-                if(wall.isSolid(entidade.getFutureHitboxY())) entidade.setMovementPermitionY(false);
+    public void checkEntitiesCollision(Entidade e1){
+        for(Entidade e2 : entities){
+            if(e2.equals(e1)){ continue; }
+            if(e1.getHitbox().overlaps(e2.getHitbox())){
+                e1.onCollide(e2);
+                e2.onCollide(e1);
             }
         }
     }

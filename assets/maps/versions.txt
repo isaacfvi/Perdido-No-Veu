@@ -1,18 +1,237 @@
-Versions - Description
+package com.mygdx.entities;
 
-0.1 - Geração padrão sem entradas, apenas cômodos com alteração de seed
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.math.Intersector;
 
-0.2 - Geração com Ramdom walk aumentando a quantidade de vezes e partindo de locais aleatórios
+public class Raycast {
 
-0.3 - geração com Ramdom walk iniciando 1 em cada quarto e parando na primeira parede
+    private final int angle;               // ângulo do ray
+    private final float range;             // distância máxima do ray
+    private final Fantasma fantasma;       // referência para o fantasma
+    private boolean foundPlayer = false;
 
-0.4 - Geração com lógica dos corredores
+    public Raycast(int angle, float range, Fantasma fantasma) {
+        this.angle = angle;
+        this.range = range;
+        this.fantasma = fantasma;
+    }
 
+    public boolean isFoundPlayer() {
+        return foundPlayer;
+    }
 
-Notes:
+    public void update(float delta) {
 
-algumas seeds estão bugando pois a origem e o bound estão incoerentes, testa a seed: 456384
+        // posição do fantasma
+        Vector2 origin2D = fantasma.getPosition();
+        Vector2 dir2D = new Vector2(1, 0).rotateDeg(angle).nor();
 
+        // limitar o ray até a distância 'range'
+        Vector2 endPoint2D = new Vector2(origin2D).mulAdd(dir2D, range);
 
+        Vector3 origin = new Vector3(origin2D.x, origin2D.y, 0);
+        Vector3 direction = new Vector3(endPoint2D.x - origin2D.x, endPoint2D.y - origin2D.y, 0).nor();
 
-ramdom walk mapa de densidade
+        Ray ray = new Ray(origin, direction);
+
+        // hitbox do jogador
+        Vector3 min = new Vector3(fantasma.getJogador().getHitbox().x,
+                fantasma.getJogador().getHitbox().y, 0);
+        Vector3 max = new Vector3(fantasma.getJogador().getHitbox().x + fantasma.getJogador().getHitbox().width,
+                fantasma.getJogador().getHitbox().y + fantasma.getJogador().getHitbox().height, 0);
+        BoundingBox playerBox = new BoundingBox(min, max);
+
+        Vector3 intersection = new Vector3();
+
+        // checa interseção
+        if (Intersector.intersectRayBounds(ray, playerBox, intersection)) {
+            foundPlayer = true;
+        }
+    }
+}
+
+------------------------------
+
+package com.mygdx.entities;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.mygdx.utils.Animation;
+import com.mygdx.utils.Consts;
+import com.mygdx.utils.MeuInputProcessor;
+
+public class Entidade {
+    private int velocidade;
+    private final Animation anim;
+    private MeuInputProcessor meuInput;
+
+    private boolean ableMoveX = true;
+    private boolean ableMoveY = true;
+
+    private final Rectangle hitbox;
+    private final Rectangle futureHitbox;
+
+    private final Vector2 centerCache = new Vector2();
+    private final Vector2 nextMoviment = new Vector2();
+
+    public Entidade(Rectangle hitbox, int velocidade, Animation anim) {
+        this.hitbox = hitbox;
+        this.futureHitbox = new Rectangle(hitbox);
+        this.velocidade = velocidade;
+        this.anim = anim;
+    }
+
+    public Entidade(Rectangle hitbox, int velocidade, Animation anim, MeuInputProcessor meuInput) {
+        this.hitbox = hitbox;
+        this.futureHitbox = new Rectangle(hitbox);
+        this.velocidade = velocidade;
+        this.anim = anim;
+        this.meuInput = meuInput;
+    }
+
+    public Entidade(Rectangle hitbox, int velocidade) {
+        this.hitbox = hitbox;
+        this.futureHitbox = new Rectangle(hitbox);
+        this.velocidade = velocidade;
+        this.anim = null;
+    }
+
+    public int getVelocidade() {
+        return velocidade;
+    }
+
+    public Vector2 getPosition() {
+        return centerCache;
+    }
+
+    public void setLocation(Vector2 pos) {
+        hitbox.setPosition(pos);
+    }
+
+    public Rectangle getFutureHitboxX() {
+        futureHitbox.setPosition(hitbox.x + nextMoviment.x, hitbox.y);
+        return futureHitbox;
+    }
+
+    public Rectangle getFutureHitboxY() {
+        futureHitbox.setPosition(hitbox.x, hitbox.y + nextMoviment.y);
+        return futureHitbox;
+    }
+
+    public Rectangle getHitbox() { return hitbox; }
+
+    public boolean checkCollision(Rectangle other) {
+        return hitbox.overlaps(other);
+    }
+
+    public MeuInputProcessor getMeuInput() {
+        return meuInput;
+    }
+
+    public void setDirecao(int direcao){
+        if(anim != null){
+            anim.setDirecao(direcao);
+        }
+    }
+
+    public void setMovementPermitionX(boolean movement){
+        this.ableMoveX = movement;
+    }
+    public void setMovementPermitionY(boolean movement){
+        this.ableMoveY = movement;
+    }
+
+    public void move(Vector2 dir, float delta){
+        if (dir.x != 0) setDirecao(dir.x < 0 ? Consts.DIREITA : Consts.ESQUERDA);
+        dir.nor();
+
+        if(ableMoveX) hitbox.x += nextMoviment.x;
+        if(ableMoveY) hitbox.y += nextMoviment.y;
+
+        nextMoviment.set(dir.x * velocidade * delta, dir.y * velocidade * delta);
+
+    }
+
+    public void update(float delta) {
+
+        if (meuInput != null && !(meuInput.isMoving())) {
+            anim.reset();
+        }
+        hitbox.getCenter(centerCache);
+
+        if(anim != null) anim.update(delta);
+    }
+
+    public void onCollide(Entidade other) {}
+
+    public void draw(SpriteBatch batch){
+        if(anim != null) anim.draw(batch, centerCache);
+    }
+}
+
+-----------------------------
+
+package com.mygdx.entities;
+
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.proceduralGeneration.TileMap;
+import com.mygdx.utils.Animation;
+import com.mygdx.utils.Assets;
+import com.mygdx.pathfiding.Pathfinding;
+
+public class Fantasma extends Entidade {
+
+    private Vector2 dir = new Vector2();
+    private Pathfinding pathfinding;
+    private Jogador jogador;
+
+    private final int numRaycasts = 8;
+    private Raycast[] raycast = new Raycast[numRaycasts];
+
+    private boolean foundPlayer = false;
+
+    public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY, Jogador jogador, TileMap[][] map) {
+        Animation anim = new Animation(assets, "Fantasma", 6, 2);
+        Rectangle hitbox = anim.getBounds();
+        hitbox.setCenter(iniX, iniY);
+        hitbox.setSize(hitbox.width - 20, hitbox.height - 12);
+        return new Fantasma(hitbox, velocidade, anim, jogador, map);
+    }
+
+    public Fantasma(Rectangle hitbox, int velocidade, Animation anim, Jogador jogador, TileMap[][] map) {
+        super(hitbox, velocidade, anim);
+
+        pathfinding = new Pathfinding(this, jogador, map, dir);
+        this.jogador = jogador;
+
+        int aux = 360/numRaycasts;
+
+        for(int i = 0; i < numRaycasts; i++) {
+            raycast[i] = new Raycast(aux * i, 32, this);
+        }
+    }
+
+    public Raycast[] getRaycast() { return raycast; }
+
+    public void update(float delta){
+        super.update(delta);
+
+        for(Raycast ray : raycast) {
+            ray.update(delta);
+            foundPlayer = ray.isFoundPlayer();
+
+            if(foundPlayer) break;
+        }
+
+        if (foundPlayer) pathfinding.path(delta);
+        move(dir, delta);
+    }
+
+    public Jogador getJogador() { return jogador;}
+}
