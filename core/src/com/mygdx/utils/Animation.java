@@ -12,8 +12,7 @@ public class Animation {
     private Sprite[][] sprite;
 
     private int currentframe;
-    private float tempoAcumuladoSprite;
-    private float frameDuration = 0.25f;
+    private Timer timer = new Timer(0.25f);
 
     private int direcao;
 
@@ -33,15 +32,12 @@ public class Animation {
 
     public void reset() {
         currentframe = 0;
-        tempoAcumuladoSprite = 0;
+        timer.reset();
     }
 
     public void update(float delta) {
-        tempoAcumuladoSprite += delta;
-        if(tempoAcumuladoSprite >= frameDuration){
-            tempoAcumuladoSprite = 0;
-            currentframe = (currentframe < sprite[0].length-1) ? currentframe+1 : 0;
-        }
+        if(timer.checkTimer(delta)) currentframe = (currentframe < sprite[0].length-1) ? currentframe+1 : 0;
+
     }
 
     public void draw(SpriteBatch batch, Vector2 pos) {

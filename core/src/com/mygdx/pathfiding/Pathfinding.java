@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.entities.Fantasma;
 import com.mygdx.entities.Jogador;
 import com.mygdx.proceduralGeneration.TileMap;
+import com.mygdx.utils.Timer;
 
 import java.util.*;
 
@@ -13,11 +14,9 @@ public class Pathfinding {
     Fantasma fantasma;
     TileMap[][] map;
     Vector2 dir, aux = new Vector2();
+    Timer timer = new Timer(0.5f);
 
     Node[][] nodes; // grade fixa de nodes
-
-    private float tempoAcumulado;
-    private float tempoCalculo = 0.5f;
 
     public Pathfinding(Fantasma fantasma, Jogador jogador, TileMap[][] map, Vector2 dir) {
         this.fantasma = fantasma;
@@ -42,11 +41,7 @@ public class Pathfinding {
     }
 
     public void perseguir(float delta){
-        tempoAcumulado += delta;
-        if(tempoAcumulado >= tempoCalculo){
-            tempoAcumulado = 0;
-            AStar();
-        }
+        if(timer.checkTimer(delta)) AStar();
     }
 
     public void AStar() {
