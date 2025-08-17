@@ -36,7 +36,7 @@ public class Collision {
             for(int j = i + 1; j < entidades.size; j++){
                 e2 = entidades.get(j);
 
-                if(e1.checkCollision(e2.getHitbox())){
+                if(e1.checkCollision(e2.getFutureHitboxX()) || e1.checkCollision(e2.getFutureHitboxY())){
                     e1.onCollide(e2);
                     e2.onCollide(e1);
                 }
