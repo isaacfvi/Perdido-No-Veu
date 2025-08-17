@@ -16,12 +16,14 @@ public class MapAssembler {
     private GeracaoProcedural geracao;
     private Random rand;
     private Array<TileMap> walls;
+    private Array<TileMap> floors;
 
 
     public MapAssembler(int seed) {
         this.rand = new Random(seed);
         this.geracao = new GeracaoProcedural(40, 40, rand);
         this.walls = new Array<>();
+        this.floors = new Array<>();
     }
 
     public TileMap[][] makeMap(Assets asset) {
@@ -32,7 +34,7 @@ public class MapAssembler {
             for (int j = 0; j < grade[i].length; j++) {
                 if (grade[i][j] == 0 || grade[i][j] == 2) { // chao ou porta
                     map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Piso" + generatePiso()), new Vector2(32 * i, 32 * j), false);
-
+                    floors.add(map[i][j]);
                 } else if(grade[i][j] == 1){
 
                     if(j > 0 && grade[i][j-1] != 1){
@@ -83,5 +85,7 @@ public class MapAssembler {
     }
 
     public Array<TileMap> getWalls(){ return walls; }
+
+    public Array<TileMap> getFloors(){ return walls; }
 
 }

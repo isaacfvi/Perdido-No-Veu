@@ -21,7 +21,7 @@ public class Controller {
     public Controller(MeuInputProcessor meuInput, Assets assets) {
         this.jogador = Jogador.create(meuInput, assets, 80, 50, 50);
         this.camera = new Camera(jogador);
-        this.mansion = new Mansion(assets);
+        this.mansion = new Mansion(jogador);
         this.collision = new Collision();
 
         collision.setWalls(mansion.generateMap(assets));
@@ -38,7 +38,7 @@ public class Controller {
             camera.update(delta);
         }
         fantasma.update(delta);
-        mansion.update();
+        mansion.update(delta);
 
         collision.update();
     }

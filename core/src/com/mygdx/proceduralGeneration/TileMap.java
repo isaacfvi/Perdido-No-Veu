@@ -10,12 +10,14 @@ public class TileMap {
     private final Sprite sprite;
     private final Rectangle hitbox;
     private final boolean isCollidable;
+    private float playerPath;
 
     public TileMap(Sprite sprite, Vector2 position, boolean isCollidable) {
         this.sprite = sprite;
         this.hitbox = new Rectangle(position.x, position.y, sprite.getWidth(), sprite.getHeight());
         this.sprite.setPosition(position.x, position.y);
         this.isCollidable = isCollidable;
+        this.playerPath = 0;
     }
 
     public boolean isSolid(Rectangle hitbox) {
@@ -28,6 +30,14 @@ public class TileMap {
 
     public void draw(SpriteBatch batch){
         sprite.draw(batch);
+    }
+
+    public void increasePath(float quant){
+        playerPath = Math.min(1, playerPath + quant);
+    }
+
+    public void decreasePath(float quant){
+        playerPath = Math.max(0, playerPath - quant);
     }
 
     @Override
