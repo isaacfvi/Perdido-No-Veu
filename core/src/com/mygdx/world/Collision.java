@@ -1,8 +1,7 @@
-package com.mygdx.game;
+package com.mygdx.world;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.entities.Entidade;
-import com.mygdx.proceduralGeneration.TileMap;
 
 import java.util.ArrayList;
 

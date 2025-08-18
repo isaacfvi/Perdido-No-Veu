@@ -1,13 +1,9 @@
-package com.mygdx.proceduralGeneration;
+package com.mygdx.generation;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.Collision;
-import com.mygdx.utils.Assets;
+import com.mygdx.core.Assets;
+import com.mygdx.world.TileMap;
 
 import java.util.Random;
 

@@ -3,11 +3,9 @@ package com.mygdx.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.QuadTreeFloat;
-import com.mygdx.game.Collision;
+import com.mygdx.world.Collision;
 import com.mygdx.utils.Animation;
-import com.mygdx.utils.Consts;
-import com.mygdx.utils.MeuInputProcessor;
+import com.mygdx.core.Consts;
 
 public class Entidade {
     private int velocidade;

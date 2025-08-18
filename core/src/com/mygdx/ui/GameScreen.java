@@ -1,11 +1,11 @@
-package com.mygdx.screens;
+package com.mygdx.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.utils.Assets;
+import com.mygdx.core.Assets;
 import com.mygdx.utils.Controller;
 import com.mygdx.utils.MeuInputProcessor;
 

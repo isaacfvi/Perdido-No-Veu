@@ -1,4 +1,4 @@
-package com.mygdx.proceduralGeneration;
+package com.mygdx.generation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.mygdx.scenes.Room;
-import com.mygdx.utils.Consts;
+import com.mygdx.world.Room;
+import com.mygdx.core.Consts;
 
 
 import java.util.*;

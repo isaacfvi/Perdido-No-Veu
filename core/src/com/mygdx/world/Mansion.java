@@ -1,13 +1,11 @@
-package com.mygdx.scenes;
+package com.mygdx.world;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.entities.Jogador;
-import com.mygdx.proceduralGeneration.MapAssembler;
-import com.mygdx.proceduralGeneration.TileMap;
-import com.mygdx.utils.Assets;
+import com.mygdx.generation.MapAssembler;
+import com.mygdx.core.Assets;
 import com.mygdx.utils.Timer;
 
 import java.util.Random;

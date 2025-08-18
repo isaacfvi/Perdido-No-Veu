@@ -1,4 +1,4 @@
-package com.mygdx.utils;
+package com.mygdx.core;
 
 public class Consts {
 

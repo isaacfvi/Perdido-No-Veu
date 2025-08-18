@@ -1,13 +1,9 @@
 package com.mygdx.entities;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.utils.Animation;
-import com.mygdx.utils.Assets;
+import com.mygdx.core.Assets;
 import com.mygdx.utils.MeuInputProcessor;
-
-import java.awt.*;
 
 public class Jogador extends Entidade{
 

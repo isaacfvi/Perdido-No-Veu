@@ -2,9 +2,9 @@ package com.mygdx.entities;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.proceduralGeneration.TileMap;
+import com.mygdx.world.TileMap;
 import com.mygdx.utils.Animation;
-import com.mygdx.utils.Assets;
+import com.mygdx.core.Assets;
 import com.mygdx.pathfiding.Pathfinding;
 
 public class Fantasma extends Entidade {

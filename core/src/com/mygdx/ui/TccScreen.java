@@ -1,12 +1,12 @@
-package com.mygdx.screens;
+package com.mygdx.ui;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.proceduralGeneration.GeracaoProcedural;
-import com.mygdx.proceduralGeneration.RoomConnectivityValidator;
+import com.mygdx.generation.GeracaoProcedural;
+import com.mygdx.generation.RoomConnectivityValidator;
 
 import java.util.Random;
 

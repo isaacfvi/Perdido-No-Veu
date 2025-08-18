@@ -3,7 +3,7 @@ package com.mygdx.pathfiding;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.entities.Fantasma;
 import com.mygdx.entities.Jogador;
-import com.mygdx.proceduralGeneration.TileMap;
+import com.mygdx.world.TileMap;
 import com.mygdx.utils.Timer;
 
 import java.util.*;

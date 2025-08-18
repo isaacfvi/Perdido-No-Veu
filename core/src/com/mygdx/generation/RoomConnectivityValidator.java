@@ -1,4 +1,4 @@
-package com.mygdx.proceduralGeneration;
+package com.mygdx.generation;
 
 import java.util.Stack;
 

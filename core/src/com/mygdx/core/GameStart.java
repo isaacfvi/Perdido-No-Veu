@@ -1,8 +1,7 @@
-package com.mygdx.game;
+package com.mygdx.core;
 
 import com.badlogic.gdx.Game;
-import com.mygdx.screens.GameScreen;
-import com.mygdx.screens.TccScreen;
+import com.mygdx.ui.GameScreen;
 
 
 public class GameStart extends Game {

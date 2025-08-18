@@ -1,6 +1,6 @@
-package com.mygdx.scenes;
+package com.mygdx.world;
 
-import com.mygdx.utils.Consts;
+import com.mygdx.core.Consts;
 
 public class Room {
 
