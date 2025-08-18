@@ -24,6 +24,13 @@ public class Entidade {
         this.anim = anim;
     }
 
+    public Entidade(Rectangle hitbox, int velocidade) {
+        this.hitbox = hitbox;
+        this.futureHitbox = new Rectangle(hitbox);
+        this.velocidade = velocidade;
+        this.anim = null;
+    }
+
     public Vector2 getPosition() {
         return centerCache;
     }

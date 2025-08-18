@@ -2,6 +2,7 @@ package com.mygdx.entities;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.utils.Timer;
 import com.mygdx.world.TileMap;
 import com.mygdx.utils.Animation;
 import com.mygdx.core.Assets;
@@ -9,8 +10,13 @@ import com.mygdx.pathfiding.Pathfinding;
 
 public class Fantasma extends Entidade {
 
-    Vector2 dir = new Vector2();
-    Pathfinding pathfinding;
+    private Vector2 dir = new Vector2();
+    private Pathfinding pathfinding;
+    private boolean playerDetected = false;
+
+    private int numRays = 8;
+    private Ray[] rays = new Ray[numRays];
+    private Timer rayTimer = new Timer(0.2f);
 
     public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY, Jogador jogador, TileMap[][] map) {
         Animation anim = new Animation(assets, "Fantasma", 6, 2);
@@ -23,14 +29,31 @@ public class Fantasma extends Entidade {
     public Fantasma(Rectangle hitbox, int velocidade, Animation anim, Jogador jogador, TileMap[][] map) {
         super(hitbox, velocidade, anim);
 
+        float angleStep = (float)360/numRays;
+        for(int i = 0; i < numRays; i++) {
+            rays[i] = new Ray(new Rectangle(0, 0, 1, 1), angleStep * i, 20);
+        }
+
         pathfinding = new Pathfinding(this, jogador, map, dir);
     }
 
     public void update(float delta){
         super.update(delta);
 
-        pathfinding.path(delta);
+        if(rayTimer.checkTimer(delta)) lookUp();
+
+        if(playerDetected) pathfinding.path(delta);
         move(dir, delta);
+    }
+
+    public void lookUp(){
+        for(Ray ray : rays){
+            ray.startMovement(getPosition().cpy());
+            if(ray.isDetectedPlayer()){
+                playerDetected = true;
+                break;
+            }
+        }
     }
 
 }
