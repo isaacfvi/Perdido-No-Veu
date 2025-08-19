@@ -81,6 +81,6 @@ public class MapAssembler {
         return 1;
     }
 
-    public Array<TileMap> getFloors(){ return walls; }
+    public Array<TileMap> getFloors(){ return floors; }
 
 }

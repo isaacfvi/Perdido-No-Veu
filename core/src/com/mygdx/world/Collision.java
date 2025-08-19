@@ -1,6 +1,8 @@
 package com.mygdx.world;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.mygdx.core.Consts;
 import com.mygdx.entities.Entidade;
 
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ public class Collision {
     private TileMap[][] map;
     private ArrayList<Entidade> entities;
 
-    private int tileWidth, tileHeight;
+    private Vector2 aux = new Vector2();
 
     private Collision() {
         entities = new ArrayList<>();
@@ -27,19 +29,16 @@ public class Collision {
 
     public void setUpMap(TileMap[][] map) {
         this.map = map;
-
-        this.tileWidth = (int)map[0][0].getHitbox().width;
-        this.tileHeight = (int)map[0][0].getHitbox().height;
     }
 
     public void inscreverEntidade(Entidade entidade) { entities.add(entidade); }
 
     public boolean checkMapCollision(Rectangle hitbox) {
 
-        int startX = Math.max(0, (int)(hitbox.x / tileWidth));
-        int startY = Math.max(0, (int)(hitbox.y / tileHeight));
-        int endX = Math.min(map.length-1, (int)((hitbox.x + hitbox.width) / tileWidth));
-        int endY = Math.min(map[0].length-1, (int)((hitbox.y + hitbox.height) / tileHeight));
+        int startX = Math.max(0, (int)(hitbox.x / Consts.TILE_SIZE));
+        int startY = Math.max(0, (int)(hitbox.y / Consts.TILE_SIZE));
+        int endX = Math.min(map.length-1, (int)((hitbox.x + hitbox.width) / Consts.TILE_SIZE));
+        int endY = Math.min(map[0].length-1, (int)((hitbox.y + hitbox.height) / Consts.TILE_SIZE));
 
         for(int y = startY; y <= endY; y++) {
             for(int x = startX; x <= endX; x++) {
@@ -57,5 +56,15 @@ public class Collision {
                 e2.onCollide(e1);
             }
         }
+    }
+
+    public TileMap getTile(Rectangle hitbox) {
+        aux = hitbox.getCenter(aux);
+        int x = (int)(aux.x / Consts.TILE_SIZE);
+        int y = (int)(aux.y / Consts.TILE_SIZE);
+
+        if (x < 0 || y < 0 || x >= map.length || y >= map[0].length) return null;
+
+        return map[x][y];
     }
 }

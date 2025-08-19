@@ -40,6 +40,10 @@ public class TileMap {
         playerPath = Math.max(0, playerPath - quant);
     }
 
+    public float getPlayerPath() {
+        return playerPath;
+    }
+
     @Override
     public String toString() {
         return "isCollidable: " + isCollidable;

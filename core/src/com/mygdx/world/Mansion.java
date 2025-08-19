@@ -20,9 +20,6 @@ public class Mansion {
 
     private Timer timer = new Timer(5);
 
-    //auxiliares
-
-    private int x, y;
     private Random rand = new Random();
 
     public Mansion(Jogador jogador) {
@@ -39,14 +36,12 @@ public class Mansion {
     }
 
     public void update(float delta){
-        x = (int)(jogador.getHitbox().x / map[0][0].getHitbox().width);
-        y = (int)(jogador.getHitbox().y / map[0][0].getHitbox().height);
-
-        map[x][y].increasePath(1);
+        TileMap tile = Collision.getInstance().getTile(jogador.getHitbox());
+        tile.increasePath(1);
 
         if(timer.checkTimer(delta)){
             for(TileMap floor : floors){
-                floor.decreasePath((rand.nextFloat() * 0.166f) - 0.05f);
+                floor.decreasePath(0.166f + (rand.nextFloat() * 0.1f - 0.05f));
             }
         }
     }

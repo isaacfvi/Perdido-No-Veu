@@ -3,6 +3,7 @@ package com.mygdx.entities;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.world.Collision;
+import com.mygdx.world.TileMap;
 
 public class Ray extends Entidade {
 
@@ -11,6 +12,7 @@ public class Ray extends Entidade {
     private int steps;
 
     private boolean detectedPlayer = false;
+    private TileMap bestTile;
 
     private Vector2 dir = new Vector2();
     private Vector2 pos = new Vector2();
@@ -23,6 +25,7 @@ public class Ray extends Entidade {
     public int startMovement(Vector2 start) {
         detectedPlayer = false;
         steps = 0;
+        bestTile = null;
 
         super.getHitbox().setPosition(start);
         pos.set(start);
@@ -30,11 +33,23 @@ public class Ray extends Entidade {
         while(Collision.getInstance().checkMapCollision(super.getHitbox()) && steps < maxSteps) {
             dir.set(0, 1).nor().rotateDeg(angle);
             super.getHitbox().setPosition(pos.add(dir));
+
+            pathing();
+
             Collision.getInstance().checkEntitiesCollision(this);
             steps++;
         }
 
         return steps;
+    }
+
+    public void pathing(){
+        TileMap tile;
+
+        tile = Collision.getInstance().getTile(super.getHitbox());
+        if (tile == null) return;
+        if(bestTile == null) bestTile = tile;
+        else if(bestTile.getPlayerPath() < tile.getPlayerPath()) bestTile = tile;
     }
 
     public boolean isDetectedPlayer() {
@@ -44,5 +59,7 @@ public class Ray extends Entidade {
     public void onCollide(Entidade e) {
         if(e instanceof Jogador) detectedPlayer = true;
     }
+
+    public TileMap getBestTile() { return bestTile; }
 
 }

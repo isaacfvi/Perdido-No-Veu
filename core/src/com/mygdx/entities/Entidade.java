@@ -75,4 +75,8 @@ public class Entidade {
     public void draw(SpriteBatch batch){
         if(anim != null) anim.draw(batch, centerCache);
     }
+
+    public void acelerar(int scl){
+        velocidade += scl;
+    }
 }

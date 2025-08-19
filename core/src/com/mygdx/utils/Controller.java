@@ -17,17 +17,18 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.jogador = Jogador.create(meuInput, assets, 80, 50, 50);
-        this.camera = new Camera(jogador);
+        this.jogador = Jogador.create(meuInput, assets, 80, 35*32, 35*32);
         this.mansion = new Mansion(jogador);
 
         Collision collision = Collision.getInstance();
         collision.setUpMap(mansion.getMap(assets));
 
-        this.fantasma = Fantasma.create(assets, 90, 150, 150, jogador, mansion.getMap(null));
+        this.fantasma = Fantasma.create(assets, 50, 150, 150, jogador, mansion.getMap(null));
 
         collision.inscreverEntidade(fantasma);
         collision.inscreverEntidade(jogador);
+
+        this.camera = new Camera(jogador);
     }
 
     public void update(float delta){

@@ -22,6 +22,7 @@ public class Fantasma extends Entidade {
     private Timer rayTimer = new Timer(0.4f);
 
     private Vector2 target = new Vector2();
+    private TileMap bestTrail;
     private Random rand = new Random();
     private FantasmaState state;
 
@@ -41,7 +42,7 @@ public class Fantasma extends Entidade {
             rays[i] = new Ray(new Rectangle(0, 0, 2, 2), angleStep * i, 20);
         }
 
-        target.set(rand.nextInt(Consts.MAP_SIZE_X) * Consts.TILE_SIZE, rand.nextInt(Consts.MAP_SIZE_Y) * Consts.TILE_SIZE);
+        getRandomTarget();
 
         this.jogador = jogador;
         this.state = FantasmaState.PATRULHA;
@@ -66,9 +67,11 @@ public class Fantasma extends Entidade {
                 target.set(jogador.getPosition());
                 break;
             case PATRULHA:
-                if(getPosition().dst(target) < 50) getRandomTarget();
+                if(bestTrail != null) bestTrail.getHitbox().getCenter(target);
+                else if(getPosition().dst(target) < 50) getRandomTarget();
                 break;
         }
+
     }
 
     public void act(float delta){
@@ -84,17 +87,33 @@ public class Fantasma extends Entidade {
     }
 
     public void lookUp(){
+        TileMap bestTrail = null;
+
         for(Ray ray : rays){
             ray.startMovement(getPosition());
+
             if(ray.isDetectedPlayer()){
-                state = FantasmaState.PERSEGUE;
-                break;
+                if(state != FantasmaState.PERSEGUE) {
+                    state = FantasmaState.PERSEGUE;
+                    acelerar(100);
+                }
+            }
+
+            if(ray.getBestTile() != null){
+                if(bestTrail == null || ray.getBestTile().getPlayerPath() > bestTrail.getPlayerPath()){
+                    bestTrail = ray.getBestTile();
+                }
             }
         }
+
+        if(bestTrail != null && bestTrail.getPlayerPath() > 0) {
+            this.bestTrail = bestTrail;
+        }
+        else this.bestTrail = null;
     }
 }
 
 enum FantasmaState {
     PATRULHA,
-    PERSEGUE,
+    PERSEGUE
 }
