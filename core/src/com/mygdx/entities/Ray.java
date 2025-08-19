@@ -13,6 +13,7 @@ public class Ray extends Entidade {
     private boolean detectedPlayer = false;
 
     private Vector2 dir = new Vector2();
+    private Vector2 pos = new Vector2();
 
     public Ray(Rectangle hitbox, float angle, int velocidade) {
         super(hitbox, velocidade);
@@ -24,10 +25,11 @@ public class Ray extends Entidade {
         steps = 0;
 
         super.getHitbox().setPosition(start);
+        pos.set(start);
 
         while(Collision.getInstance().checkMapCollision(super.getHitbox()) && steps < maxSteps) {
             dir.set(0, 1).nor().rotateDeg(angle);
-            super.getHitbox().setPosition(start.add(dir));
+            super.getHitbox().setPosition(pos.add(dir));
             Collision.getInstance().checkEntitiesCollision(this);
             steps++;
         }

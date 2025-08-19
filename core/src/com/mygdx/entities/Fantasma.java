@@ -85,7 +85,7 @@ public class Fantasma extends Entidade {
 
     public void lookUp(){
         for(Ray ray : rays){
-            ray.startMovement(getPosition().cpy());
+            ray.startMovement(getPosition());
             if(ray.isDetectedPlayer()){
                 state = FantasmaState.PERSEGUE;
                 break;
