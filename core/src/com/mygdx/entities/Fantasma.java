@@ -2,21 +2,28 @@ package com.mygdx.entities;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.core.Consts;
 import com.mygdx.utils.Timer;
 import com.mygdx.world.TileMap;
 import com.mygdx.utils.Animation;
 import com.mygdx.core.Assets;
 import com.mygdx.pathfiding.Pathfinding;
 
+import java.util.Random;
+
 public class Fantasma extends Entidade {
 
     private Vector2 dir = new Vector2();
     private Pathfinding pathfinding;
-    private boolean playerDetected = false;
+    Jogador jogador;
 
     private int numRays = 64;
     private Ray[] rays = new Ray[numRays];
     private Timer rayTimer = new Timer(0.4f);
+
+    private Vector2 target = new Vector2();
+    private Random rand = new Random();
+    private FantasmaState state;
 
     public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY, Jogador jogador, TileMap[][] map) {
         Animation anim = new Animation(assets, "Fantasma", 6, 2);
@@ -34,26 +41,60 @@ public class Fantasma extends Entidade {
             rays[i] = new Ray(new Rectangle(0, 0, 2, 2), angleStep * i, 20);
         }
 
-        pathfinding = new Pathfinding(this, jogador, map, dir);
+        target.set(rand.nextInt(Consts.MAP_SIZE_X) * Consts.TILE_SIZE, rand.nextInt(Consts.MAP_SIZE_Y) * Consts.TILE_SIZE);
+
+        this.jogador = jogador;
+        this.state = FantasmaState.PATRULHA;
+        pathfinding = new Pathfinding(this, map, dir);
     }
 
     public void update(float delta){
         super.update(delta);
 
-        if(rayTimer.checkTimer(delta)) lookUp();
+        perception(delta);
+        plan();
+        act(delta);
+    }
 
-        if(playerDetected) pathfinding.path(delta);
+    public void perception(float delta){
+        if(rayTimer.checkTimer(delta)) lookUp();
+    }
+
+    public void plan(){
+        switch (state) {
+            case PERSEGUE:
+                target.set(jogador.getPosition());
+                break;
+            case PATRULHA:
+                if(getPosition().dst(target) < 50) getRandomTarget();
+                break;
+        }
+    }
+
+    public void act(float delta){
+        pathfinding.goTo(delta, target);
         move(dir, delta);
+    }
+
+    public void getRandomTarget(){
+        target.set(
+                rand.nextInt(Consts.MAP_SIZE_X) * Consts.TILE_SIZE,
+                rand.nextInt(Consts.MAP_SIZE_Y) * Consts.TILE_SIZE
+        );
     }
 
     public void lookUp(){
         for(Ray ray : rays){
             ray.startMovement(getPosition().cpy());
             if(ray.isDetectedPlayer()){
-                playerDetected = true;
+                state = FantasmaState.PERSEGUE;
                 break;
             }
         }
     }
+}
 
+enum FantasmaState {
+    PATRULHA,
+    PERSEGUE,
 }

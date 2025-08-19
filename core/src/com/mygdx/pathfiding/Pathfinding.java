@@ -1,6 +1,7 @@
 package com.mygdx.pathfiding;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.core.Consts;
 import com.mygdx.entities.Fantasma;
 import com.mygdx.entities.Jogador;
 import com.mygdx.world.TileMap;
@@ -10,17 +11,23 @@ import java.util.*;
 
 public class Pathfinding {
 
-    Jogador jogador;
     Fantasma fantasma;
     TileMap[][] map;
     Vector2 dir, aux = new Vector2();
     Timer timer = new Timer(0.2f);
 
+    PriorityQueue<Node> openList = new PriorityQueue<>(
+            Comparator.comparingInt(Node::fCost).thenComparingInt(n -> n.hCost)
+    );
+    Set<Node> closedSet = new HashSet<>();
+    List<Node> neighbors = new ArrayList<>();
+    List<Node> path = new ArrayList<>();
+
     Node[][] nodes; // grade fixa de nodes
 
-    public Pathfinding(Fantasma fantasma, Jogador jogador, TileMap[][] map, Vector2 dir) {
+    public Pathfinding(Fantasma fantasma, TileMap[][] map, Vector2 dir) {
         this.fantasma = fantasma;
-        this.jogador = jogador;
+
         this.map = map;
         this.dir = dir;
 
@@ -36,26 +43,43 @@ public class Pathfinding {
         }
     }
 
-    public void path(float delta){
-        perseguir(delta);
+    public void goTo(float delta, Vector2 target) {
+        if (timer.checkTimer(delta)) {
+            int tx = (int)(target.x / Consts.TILE_SIZE);
+            int ty = (int)(target.y / Consts.TILE_SIZE);
+
+            if (map[tx][ty].isCollidable()) findNearbyFreeTile(target, tx, ty);
+
+            AStar(target);
+        }
     }
 
-    public void perseguir(float delta){
-        if(timer.checkTimer(delta)) AStar();
+    public void findNearbyFreeTile(Vector2 target, int dx, int dy) {
+        int[][] dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1}, { 1, 1}, { 1,-1}, {-1, 1}, {-1,-1}};
+        int nx, ny;
+
+        for (int[] d : dirs) {
+            nx = dx + d[0];
+            ny = dy + d[1];
+
+            if (nx >= 0 && nx < map.length && ny >= 0 && ny < map[0].length) {
+                if (!map[nx][ny].isCollidable()) {
+                    target.set(nx * Consts.TILE_SIZE, ny * Consts.TILE_SIZE);
+                    return;
+                }
+            }
+        }
     }
 
-    public void AStar() {
-        PriorityQueue<Node> openList = new PriorityQueue<>(
-                Comparator.comparingInt(Node::fCost).thenComparingInt(n -> n.hCost)
-        );
-        Set<Node> closedSet = new HashSet<>();
+
+    public void AStar(Vector2 target) {
+        openList.clear();
+        closedSet.clear();
 
         fantasma.getHitbox().getCenter(aux);
         Node startNode = nodeFromWorld(aux);
 
-        Node targetNode = nodeFromWorld(new Vector2(
-                jogador.getHitbox().x, jogador.getHitbox().y
-        ));
+        Node targetNode = nodeFromWorld(target);
 
         resetNodes();
 
@@ -111,7 +135,7 @@ public class Pathfinding {
     }
 
     private List<Node> getNeighbors(Node node) {
-        List<Node> neighbors = new ArrayList<>();
+        neighbors.clear();
         int[] dx = {-1, 1, 0, 0};
         int[] dy = {0, 0, -1, 1};
 
@@ -131,7 +155,7 @@ public class Pathfinding {
     }
 
     private void reconstrimirCaminho(Node targetNode, Vector2 fantasmaPos) {
-        List<Node> path = new ArrayList<>();
+        path.clear();
         Node current = targetNode;
 
         while (current != null) {
