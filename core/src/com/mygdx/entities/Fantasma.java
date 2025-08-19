@@ -14,9 +14,9 @@ public class Fantasma extends Entidade {
     private Pathfinding pathfinding;
     private boolean playerDetected = false;
 
-    private int numRays = 8;
+    private int numRays = 64;
     private Ray[] rays = new Ray[numRays];
-    private Timer rayTimer = new Timer(0.2f);
+    private Timer rayTimer = new Timer(0.4f);
 
     public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY, Jogador jogador, TileMap[][] map) {
         Animation anim = new Animation(assets, "Fantasma", 6, 2);
@@ -31,7 +31,7 @@ public class Fantasma extends Entidade {
 
         float angleStep = (float)360/numRays;
         for(int i = 0; i < numRays; i++) {
-            rays[i] = new Ray(new Rectangle(0, 0, 1, 1), angleStep * i, 20);
+            rays[i] = new Ray(new Rectangle(0, 0, 2, 2), angleStep * i, 20);
         }
 
         pathfinding = new Pathfinding(this, jogador, map, dir);

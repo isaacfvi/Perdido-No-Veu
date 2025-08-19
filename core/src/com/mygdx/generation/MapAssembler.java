@@ -3,6 +3,7 @@ package com.mygdx.generation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.core.Assets;
+import com.mygdx.core.Consts;
 import com.mygdx.world.TileMap;
 
 import java.util.Random;
@@ -29,15 +30,15 @@ public class MapAssembler {
         for (int i = 0; i < grade.length; i++) {
             for (int j = 0; j < grade[i].length; j++) {
                 if (grade[i][j] == 0 || grade[i][j] == 2) { // chao ou porta
-                    map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Piso" + generatePiso()), new Vector2(32 * i, 32 * j), false);
+                    map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Piso" + generatePiso()), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), false);
                     floors.add(map[i][j]);
                 } else if(grade[i][j] == 1){
 
                     if(j > 0 && grade[i][j-1] != 1){
-                        map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "ParedeFrontal" + generateParede()), new Vector2(32 * i, 32 * j), true);
+                        map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "ParedeFrontal" + generateParede()), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), true);
 
                     } else {
-                        map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Parede"), new Vector2(32 * i, 32 * j), true);
+                        map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Parede"), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), true);
                     }
 
                     walls.add(map[i][j]);
@@ -79,8 +80,6 @@ public class MapAssembler {
 
         return 1;
     }
-
-    public Array<TileMap> getWalls(){ return walls; }
 
     public Array<TileMap> getFloors(){ return walls; }
 
