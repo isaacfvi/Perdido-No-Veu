@@ -18,7 +18,7 @@ public class MapAssembler {
 
     public MapAssembler(int seed) {
         this.rand = new Random(seed);
-        this.geracao = new GeracaoProcedural(40, 40, rand);
+        this.geracao = new GeracaoProcedural(Consts.MAP_SIZE_X, Consts.MAP_SIZE_Y, rand);
         this.walls = new Array<>();
         this.floors = new Array<>();
     }

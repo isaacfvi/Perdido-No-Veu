@@ -3,6 +3,7 @@ package com.mygdx.world;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.core.Consts;
 import com.mygdx.entities.Jogador;
 import com.mygdx.generation.MapAssembler;
 import com.mygdx.core.Assets;
@@ -29,7 +30,7 @@ public class Mansion {
     }
 
     public TileMap[][] generateMap(Assets assets) {
-        MapAssembler assembler = new MapAssembler(358874);
+        MapAssembler assembler = new MapAssembler(Consts.SEED);
 
         this.map = assembler.makeMap(assets);
         this.floors = assembler.getFloors();
