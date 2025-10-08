@@ -8,7 +8,9 @@ public class Consts {
 
     public static final int SEED = 358874;
     public static final int MAP_SIZE_X = 40;
-    public static final int MAP_SIZE_Y = 40;
+    public static final int MAP_SIZE_Y = 25;
+
+    public static final int QUANT_TRAPS = 4;
 
     //Animations
     public static final byte DIREITA = 0;

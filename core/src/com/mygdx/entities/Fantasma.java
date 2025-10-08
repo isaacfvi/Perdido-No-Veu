@@ -20,6 +20,7 @@ public class Fantasma extends Entidade {
     private int numRays = 64;
     private Ray[] rays = new Ray[numRays];
     private Timer rayTimer = new Timer(0.4f);
+    private Timer waitTimer = new Timer(2f);
 
     private Vector2 target = new Vector2();
     private TileMap bestTrail;
@@ -42,7 +43,7 @@ public class Fantasma extends Entidade {
             rays[i] = new Ray(new Rectangle(0, 0, 2, 2), angleStep * i, 20);
         }
 
-        getRandomTarget();
+        getNewTarget();
 
         this.jogador = jogador;
         this.state = FantasmaState.PATRULHA;
@@ -53,7 +54,7 @@ public class Fantasma extends Entidade {
         super.update(delta);
 
         perception(delta);
-        plan();
+        plan(delta);
         act(delta);
     }
 
@@ -61,29 +62,45 @@ public class Fantasma extends Entidade {
         if(rayTimer.checkTimer(delta)) lookUp();
     }
 
-    public void plan(){
+    public void plan(float delta){
         switch (state) {
             case PERSEGUE:
                 target.set(jogador.getPosition());
                 break;
             case PATRULHA:
                 if(bestTrail != null) bestTrail.getHitbox().getCenter(target);
-                else if(getPosition().dst(target) < 50) getRandomTarget();
+                else if(getPosition().dst(target) < 50) getNewTarget();
+                break;
+            case INVESTIGA:
+                if(getPosition().dst(target) < 20) state = FantasmaState.PARADO;
+                break;
+            case PARADO:
+                if(waitTimer.checkTimer(delta))
+                    state = FantasmaState.PATRULHA;
                 break;
         }
 
     }
 
     public void act(float delta){
-        pathfinding.goTo(delta, target);
-        move(dir, delta);
+        if(state != FantasmaState.PARADO) {
+            pathfinding.goTo(delta, target);
+            move(dir, delta);
+        }
     }
 
-    public void getRandomTarget(){
+    public void getNewTarget(){
         target.set(
                 rand.nextInt(Consts.MAP_SIZE_X) * Consts.TILE_SIZE,
                 rand.nextInt(Consts.MAP_SIZE_Y) * Consts.TILE_SIZE
         );
+    }
+
+    public void setTarget(Vector2 target) {
+        if(target != null) {
+            state = FantasmaState.INVESTIGA;
+            this.target.set(target);
+        }
     }
 
     public void lookUp(){
@@ -96,6 +113,7 @@ public class Fantasma extends Entidade {
                 if(state != FantasmaState.PERSEGUE) {
                     state = FantasmaState.PERSEGUE;
                     acelerar(100);
+                    return;
                 }
             }
 
@@ -115,5 +133,7 @@ public class Fantasma extends Entidade {
 
 enum FantasmaState {
     PATRULHA,
-    PERSEGUE
+    PERSEGUE,
+    INVESTIGA,
+    PARADO
 }

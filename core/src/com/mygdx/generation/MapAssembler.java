@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.core.Assets;
 import com.mygdx.core.Consts;
+import com.mygdx.entities.Trap;
+import com.mygdx.world.Collision;
 import com.mygdx.world.TileMap;
 
 import java.util.Random;
@@ -14,6 +16,7 @@ public class MapAssembler {
     private Random rand;
     private Array<TileMap> walls;
     private Array<TileMap> floors;
+    private Array<Trap> traps;
 
 
     public MapAssembler(int seed) {
@@ -21,6 +24,7 @@ public class MapAssembler {
         this.geracao = new GeracaoProcedural(Consts.MAP_SIZE_X, Consts.MAP_SIZE_Y, rand);
         this.walls = new Array<>();
         this.floors = new Array<>();
+        this.traps = new Array<>();
     }
 
     public TileMap[][] makeMap(Assets asset) {
@@ -44,6 +48,22 @@ public class MapAssembler {
                     walls.add(map[i][j]);
                 }
             }
+        }
+
+        // Geração de traps
+        Collision collision = Collision.getInstance();
+        Trap trap;
+        int x, y;
+
+        for (int i = 0; i < Consts.QUANT_TRAPS; i++) {
+            do{
+                x = rand.nextInt(Consts.MAP_SIZE_X);
+                y = rand.nextInt(Consts.MAP_SIZE_Y);
+            } while(map[x][y].isCollidable());
+
+            trap = Trap.create(asset, Consts.TILE_SIZE * x - 16, Consts.TILE_SIZE * y + 16);
+            collision.inscreverEntidade(trap);
+            traps.add(trap);
         }
 
         return map;
@@ -82,5 +102,6 @@ public class MapAssembler {
     }
 
     public Array<TileMap> getFloors(){ return floors; }
+    public Array<Trap> getTraps(){ return traps; }
 
 }

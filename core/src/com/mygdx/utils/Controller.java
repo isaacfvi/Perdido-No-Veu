@@ -5,6 +5,7 @@ import com.mygdx.core.Assets;
 import com.mygdx.entities.Camera;
 import com.mygdx.entities.Fantasma;
 import com.mygdx.entities.Jogador;
+import com.mygdx.entities.Trap;
 import com.mygdx.world.Collision;
 import com.mygdx.world.Mansion;
 
@@ -17,7 +18,7 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.jogador = Jogador.create(meuInput, assets, 80, 35*32, 35*32);
+        this.jogador = Jogador.create(meuInput, assets, 80, 14*32, 14*32);
         this.mansion = new Mansion(jogador);
 
         Collision collision = Collision.getInstance();
@@ -38,6 +39,8 @@ public class Controller {
         }
         fantasma.update(delta);
         mansion.update(delta);
+
+        fantasma.setTarget(mansion.checkTrap());
     }
 
     public void draw(SpriteBatch batch){
