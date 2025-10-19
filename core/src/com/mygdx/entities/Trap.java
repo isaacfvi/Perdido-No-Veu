@@ -8,8 +8,8 @@ public class Trap extends Entidade {
 
     private boolean detectPlayer;
 
-    public static Trap create(Assets assets, float iniX, float iniY) {
-        Animation anim = new Animation(assets, "Trap", 1, 1);
+    public static Trap create(Assets assets, float iniX, float iniY, int trap) {
+        Animation anim = new Animation(assets, "Trap" + trap, 1, 1);
         Rectangle hitbox = anim.getBounds();
         hitbox.setCenter(iniX, iniY);
         hitbox.setSize(hitbox.width, hitbox.height);

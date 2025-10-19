@@ -61,7 +61,7 @@ public class MapAssembler {
                 y = rand.nextInt(Consts.MAP_SIZE_Y);
             } while(map[x][y].isCollidable());
 
-            trap = Trap.create(asset, Consts.TILE_SIZE * x - 16, Consts.TILE_SIZE * y + 16);
+            trap = Trap.create(asset, Consts.TILE_SIZE * x - 16, Consts.TILE_SIZE * y + 16, rand.nextInt(1, 3));
             collision.inscreverEntidade(trap);
             traps.add(trap);
         }
@@ -70,7 +70,7 @@ public class MapAssembler {
     }
 
     public int generatePiso() {
-        float[] probabilidades = {0.26f, 0.26f, 0.26f, 0.164f, 0.055f, 0.001f}; // Soma deve ser 1
+        float[] probabilidades = {0.333f, 0.333f, 0.333f, 0.001f}; // Soma deve ser 1
 
         float num = rand.nextFloat();
         float acumulado = 0;
