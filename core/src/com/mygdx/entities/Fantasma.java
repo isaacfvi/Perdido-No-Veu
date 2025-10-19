@@ -75,8 +75,10 @@ public class Fantasma extends Entidade {
                 if(getPosition().dst(target) < 20) state = FantasmaState.PARADO;
                 break;
             case PARADO:
-                if(waitTimer.checkTimer(delta))
+                if(waitTimer.checkTimer(delta)){
                     state = FantasmaState.PATRULHA;
+                    setVelocidade(50);
+                }
                 break;
         }
 
@@ -99,6 +101,7 @@ public class Fantasma extends Entidade {
     public void setTarget(Vector2 target) {
         if(target != null) {
             state = FantasmaState.INVESTIGA;
+            setVelocidade(120);
             this.target.set(target);
         }
     }
@@ -112,7 +115,7 @@ public class Fantasma extends Entidade {
             if(ray.isDetectedPlayer()){
                 if(state != FantasmaState.PERSEGUE) {
                     state = FantasmaState.PERSEGUE;
-                    acelerar(100);
+                    setVelocidade(120);
                     return;
                 }
             }

@@ -76,7 +76,7 @@ public class Entidade {
         if(anim != null) anim.draw(batch, centerCache);
     }
 
-    public void acelerar(int scl){
-        velocidade += scl;
+    public void setVelocidade(int scl){
+        velocidade = scl;
     }
 }
