@@ -36,7 +36,10 @@ public class MapAssembler {
                 if (grade[i][j] == 0 || grade[i][j] == 2) { // chao ou porta
                     map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Piso" + generatePiso()), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), false);
                     floors.add(map[i][j]);
-                } else if(grade[i][j] == 1){
+                } else if(grade[i][j] == 3){
+                    map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Parede"), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), true);
+
+                }else if(grade[i][j] == 1){
 
                     if(j > 0 && grade[i][j-1] != 1){
                         map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "ParedeFrontal" + generateParede()), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), true);
@@ -61,7 +64,7 @@ public class MapAssembler {
                 y = rand.nextInt(Consts.MAP_SIZE_Y);
             } while(map[x][y].isCollidable());
 
-            trap = Trap.create(asset, Consts.TILE_SIZE * x - 16, Consts.TILE_SIZE * y + 16, rand.nextInt(1, 3));
+            trap = Trap.create(asset, Consts.TILE_SIZE * x + 16, Consts.TILE_SIZE * y + 16, rand.nextInt(1, 3));
             collision.inscreverEntidade(trap);
             traps.add(trap);
         }

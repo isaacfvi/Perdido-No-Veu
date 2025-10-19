@@ -25,8 +25,8 @@ public class GeracaoProcedural {
     private Texture texture;
     private final boolean saveImage = true;
 
-    private final int minRoomArea = 100;
-    private final int minRoomSide = 5;
+    private final int minRoomArea = 80;
+    private final int minRoomSide = 4;
 
     private int seed;
 
@@ -56,6 +56,7 @@ public class GeracaoProcedural {
             generateGrafo();
             createEntrances();
             posProcess();
+            createObstacles();
 
             if (new RoomConnectivityValidator(grade).isAllRoomsConnected()) {
                 return grade;
@@ -72,7 +73,6 @@ public class GeracaoProcedural {
         generateGrafo();
         createEntrances();
         posProcess();
-        fineTuning();
         texture = generatePixmap();
 
         if(saveImage) {
@@ -168,6 +168,40 @@ public class GeracaoProcedural {
     private void posProcess() {
         fixUnconectedRooms();
         openCorridors();
+        fineTuning();
+    }
+
+    private void createObstacles() {
+        int x, y;
+
+        for (int i = 0; i < Consts.QUANT_OBSTACLES; i++) {
+            boolean valid;
+
+            do {
+                x = rand.nextInt(Consts.MAP_SIZE_X);
+                y = rand.nextInt(Consts.MAP_SIZE_Y);
+
+                valid = grade[x][y] == 0;
+
+                if (valid) {
+                    for (int dx = -1; dx <= 1 && valid; dx++) {
+                        for (int dy = -1; dy <= 1 && valid; dy++) {
+                            if (dx == 0 && dy == 0) continue;
+                            int nx = x + dx;
+                            int ny = y + dy;
+
+                            if (nx >= 0 && nx < Consts.MAP_SIZE_X && ny >= 0 && ny < Consts.MAP_SIZE_Y) {
+                                if (grade[nx][ny] == 2) {
+                                    valid = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            } while (!valid);
+
+            grade[x][y] = 3;
+        }
     }
 
     private void fineTuning(){
