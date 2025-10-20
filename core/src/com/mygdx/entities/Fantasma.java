@@ -132,6 +132,12 @@ public class Fantasma extends Entidade {
         }
         else this.bestTrail = null;
     }
+
+    public void onCollide(Entidade other) {
+        if(other instanceof Salt){
+            state = FantasmaState.PARADO;
+        }
+    }
 }
 
 enum FantasmaState {

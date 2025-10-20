@@ -1,27 +1,33 @@
 package com.mygdx.entities;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.utils.Animation;
 import com.mygdx.core.Assets;
 import com.mygdx.utils.MeuInputProcessor;
+import com.mygdx.utils.Timer;
+import com.mygdx.world.Collision;
 
 public class Jogador extends Entidade{
 
     private boolean alive;
     private MeuInputProcessor meuInput;
+    private Salt salt;
 
     public static Jogador create(MeuInputProcessor meuInput, Assets assets, int velocidade, float iniX, float iniY) {
         Animation anim = new Animation(assets, "Player", 3, 2);
         Rectangle hitbox = anim.getBounds();
         hitbox.setCenter(iniX, iniY);
         hitbox.setSize(hitbox.width - 20, hitbox.height - 12);
-        return new Jogador(hitbox, velocidade, anim, meuInput);
+        return new Jogador(assets, hitbox, velocidade, anim, meuInput);
     }
 
-    private Jogador(Rectangle hitbox, int velocidade, Animation anim, MeuInputProcessor meuInput) {
+    private Jogador(Assets assets, Rectangle hitbox, int velocidade, Animation anim, MeuInputProcessor meuInput) {
         super(hitbox, velocidade, anim);
         this.meuInput = meuInput;
         this.alive = true;
+        salt = Salt.create(assets);
+
     }
 
     @Override
@@ -37,8 +43,14 @@ public class Jogador extends Entidade{
             else
                 this.setVelocidade(80);
 
+            if(meuInput.isSpace()){
+                salt.active(this.getPosition());
+            }
+
             meuInput.update(this, delta);
         }
+
+        salt.update(delta);
     }
 
     public void onCollide(Entidade other) {
@@ -56,6 +68,11 @@ public class Jogador extends Entidade{
 
     public void died(){
         alive = false;
+    }
+
+    public void draw(SpriteBatch batch){
+        super.draw(batch);
+        salt.draw(batch);
     }
 
 }

@@ -10,7 +10,7 @@ import com.mygdx.entities.Jogador;
 public class MeuInputProcessor implements InputProcessor {
 
     private boolean[] moviment;
-    private boolean shift;
+    private boolean shift, space;
 
     private Vector2 dir = new Vector2();
 
@@ -31,6 +31,8 @@ public class MeuInputProcessor implements InputProcessor {
             moviment[3] = true;
         } else if (i == Input.Keys.SHIFT_LEFT) {
             shift = true;
+        } else if (i == com.badlogic.gdx.Input.Keys.SPACE) {
+            space = true;
         }
         return true;
     }
@@ -48,6 +50,8 @@ public class MeuInputProcessor implements InputProcessor {
             moviment[3] = false;
         } else if (i == Input.Keys.SHIFT_LEFT) {
             shift = false;
+        } else if (i == com.badlogic.gdx.Input.Keys.SPACE) {
+            space = false;
         }
         return true;
     }
@@ -102,6 +106,10 @@ public class MeuInputProcessor implements InputProcessor {
 
     public boolean isRunning(){
         return shift;
+    }
+
+    public boolean isSpace() {
+        return space;
     }
 
 }

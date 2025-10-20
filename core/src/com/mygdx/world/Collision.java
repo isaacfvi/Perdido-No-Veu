@@ -33,6 +33,8 @@ public class Collision {
 
     public void inscreverEntidade(Entidade entidade) { entities.add(entidade); }
 
+    public void removerEntidade(Entidade entidade) { entities.remove(entidade); }
+
     public boolean checkMapCollision(Rectangle hitbox) {
 
         int startX = Math.max(0, (int)(hitbox.x / Consts.TILE_SIZE));
