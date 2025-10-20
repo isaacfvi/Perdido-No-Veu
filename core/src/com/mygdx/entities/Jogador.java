@@ -27,9 +27,18 @@ public class Jogador extends Entidade{
     @Override
     public void update(float delta){
         super.update(delta);
-        if (meuInput != null && !(meuInput.isMoving())) super.animReset();
 
-        meuInput.update(this, delta);
+        if(meuInput != null) {
+            if(!meuInput.isMoving())
+                super.animReset();
+
+            if(meuInput.isRunning())
+                this.setVelocidade(120);
+            else
+                this.setVelocidade(80);
+
+            meuInput.update(this, delta);
+        }
     }
 
     public void onCollide(Entidade other) {

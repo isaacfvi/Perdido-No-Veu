@@ -1,5 +1,6 @@
 package com.mygdx.utils;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.entities.Camera;
@@ -9,6 +10,7 @@ import com.mygdx.entities.Jogador;
 public class MeuInputProcessor implements InputProcessor {
 
     private boolean[] moviment;
+    private boolean shift;
 
     private Vector2 dir = new Vector2();
 
@@ -27,6 +29,8 @@ public class MeuInputProcessor implements InputProcessor {
             moviment[2] = true;
         }else if (i == com.badlogic.gdx.Input.Keys.S) {
             moviment[3] = true;
+        } else if (i == Input.Keys.SHIFT_LEFT) {
+            shift = true;
         }
         return true;
     }
@@ -42,6 +46,8 @@ public class MeuInputProcessor implements InputProcessor {
             moviment[2] = false;
         }else if (i == com.badlogic.gdx.Input.Keys.S) {
             moviment[3] = false;
+        } else if (i == Input.Keys.SHIFT_LEFT) {
+            shift = false;
         }
         return true;
     }
@@ -87,12 +93,15 @@ public class MeuInputProcessor implements InputProcessor {
         if (deltaX != 0 || deltaY != 0) {
             entity.move(dir.set(deltaX, deltaY), delta);
         }
-
     }
 
     public boolean isMoving() {
         // Se qualquer direção de movimento estiver ativa, retorna true
         return moviment[0] || moviment[1] || moviment[2] || moviment[3];
+    }
+
+    public boolean isRunning(){
+        return shift;
     }
 
 }
