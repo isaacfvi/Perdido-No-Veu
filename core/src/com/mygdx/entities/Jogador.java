@@ -36,6 +36,9 @@ public class Jogador extends Entidade{
         if(other instanceof Fantasma){
             died();
         }
+        if(other instanceof Sapato){
+            died();
+        }
     }
 
     public boolean isAlive() {

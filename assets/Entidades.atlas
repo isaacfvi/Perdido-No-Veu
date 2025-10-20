@@ -5,6 +5,8 @@ Fantasma
 bounds:2,36,192,64
 Player
 bounds:196,36,96,64
+Sapato
+bounds:36,2,32,32
 Trap1
 bounds:2,2,32,32
 Trap2

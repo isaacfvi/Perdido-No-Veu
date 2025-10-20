@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.core.Consts;
+import com.mygdx.entities.Entidade;
 import com.mygdx.entities.Jogador;
 import com.mygdx.entities.Trap;
 import com.mygdx.generation.MapAssembler;
@@ -19,7 +20,7 @@ public class Mansion {
     private TileMap[][] map;
     private Jogador jogador;
     private Array<TileMap> floors;
-    private Array<Trap> traps;
+    private Array<Entidade> entidades;
 
     private Timer timer = new Timer(1f);
 
@@ -34,10 +35,10 @@ public class Mansion {
 
         this.map = assembler.makeMap(assets);
         this.floors = assembler.getFloors();
-        this.traps = assembler.getTraps();
+        this.entidades = assembler.getEntidades();
 
-        for (Trap trap : traps) {
-            trap.update(0);
+        for (Entidade entidade : entidades) {
+            entidade.update(0);
         }
 
         return map;
@@ -66,16 +67,20 @@ public class Mansion {
             }
         }
 
-        for (Trap trap : traps) {
-            trap.draw(batch);
+        for (Entidade entidade : entidades) {
+            entidade.draw(batch);
         }
     }
 
     public Vector2 checkTrap(){
-        for(Trap trap : traps){
-            if(trap.isDetectPlayer()){
-                trap.desactive();
-                return trap.getPosition();
+        Trap trap;
+        for(Entidade entidade : entidades){
+            if(entidade instanceof Trap){
+                trap = (Trap)entidade;
+                if(trap.isDetectPlayer()){
+                    trap.desactive();
+                    return trap.getPosition();
+                }
             }
         }
         return null;
