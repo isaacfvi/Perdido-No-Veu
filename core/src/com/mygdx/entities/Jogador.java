@@ -14,6 +14,9 @@ public class Jogador extends Entidade{
     private MeuInputProcessor meuInput;
     private Salt salt;
 
+    private final int run = 120;
+    private final int walk = 80;
+
     public static Jogador create(MeuInputProcessor meuInput, Assets assets, int velocidade, float iniX, float iniY) {
         Animation anim = new Animation(assets, "Player", 3, 2);
         Rectangle hitbox = anim.getBounds();
@@ -39,9 +42,9 @@ public class Jogador extends Entidade{
                 super.animReset();
 
             if(meuInput.isRunning())
-                this.setVelocidade(120);
+                this.setVelocidade(run);
             else
-                this.setVelocidade(80);
+                this.setVelocidade(walk);
 
             if(meuInput.isSpace()){
                 salt.active(this.getPosition());
@@ -54,7 +57,7 @@ public class Jogador extends Entidade{
     }
 
     public void onCollide(Entidade other) {
-        if(other instanceof Fantasma){
+        if(other instanceof Fantasma && !((Fantasma) other).isRunning()){
             died();
         }
         if(other instanceof Sapato){

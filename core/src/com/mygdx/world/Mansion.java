@@ -31,11 +31,14 @@ public class Mansion {
     }
 
     public TileMap[][] generateMap(Assets assets) {
+        Consts.SEED = rand.nextInt(0, 999999);
+        System.out.println("Seed: " + Consts.SEED);
         MapAssembler assembler = new MapAssembler(Consts.SEED);
-
+        //184565
         this.map = assembler.makeMap(assets);
         this.floors = assembler.getFloors();
         this.entidades = assembler.getEntidades();
+        jogador.getHitbox().setPosition(getEntityInitPosition());
 
         for (Entidade entidade : entidades) {
             entidade.update(0);
@@ -58,6 +61,18 @@ public class Mansion {
     public TileMap[][] getMap(Assets assets) {
         if(map != null) return map;
         else return generateMap(assets);
+    }
+
+    public Vector2 getEntityInitPosition(){
+        int x, y;
+
+        do{
+            x = rand.nextInt(Consts.MAP_SIZE_X);
+            y = rand.nextInt(Consts.MAP_SIZE_Y);
+            System.out.println("X: "+x+" Y: "+y);
+        } while(map[x][y].isCollidable());
+
+        return new Vector2(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE);
     }
 
     public void draw(SpriteBatch batch){
