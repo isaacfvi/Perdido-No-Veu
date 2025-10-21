@@ -94,7 +94,7 @@ public class GeracaoProcedural {
     }
 
     public void generate(int startX, int startY, int endX, int endY, boolean bool) {
-        if ((endX - startX) * (endY - startY) < minRoomArea || (endX - startX < minRoomSide) || (endY - startY < minRoomSide)) {
+        if ((endX - startX) * (endY - startY) < minRoomArea || (endX - startX <= minRoomSide) || (endY - startY <= minRoomSide)) {
             rooms.add(new Room(startX, startY, endX, endY, minRoomSide));
 
         }else if (bool) {
@@ -123,7 +123,6 @@ public class GeracaoProcedural {
             generate(startX, startY, endX, splitPosition, bool);
             generate(startX, splitPosition, endX, endY, bool);
         }
-
     }
 
     private void generateGrafo(){
@@ -217,8 +216,8 @@ public class GeracaoProcedural {
 
                 if(!left && !right && !down && !up && grade[i][j] != 0){
                     grade[i][j] = 0;
-                    texture = generatePixmap();
-                    imageCounter++;
+                    //texture = generatePixmap();
+                    //imageCounter++;
                 }
             }
         }
