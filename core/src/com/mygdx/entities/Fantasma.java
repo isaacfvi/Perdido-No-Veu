@@ -21,11 +21,15 @@ public class Fantasma extends Entidade {
     private Ray[] rays = new Ray[numRays];
     private Timer rayTimer = new Timer(0.4f);
     private Timer waitTimer = new Timer(2f);
+    private Timer fugaTimer = new Timer(20f);
 
     private Vector2 target = new Vector2();
     private TileMap bestTrail;
     private Random rand = new Random();
     private FantasmaState state;
+
+    private final int run = 150;
+    private final int walk = 50;
 
     public static Fantasma create(Assets assets, int velocidade, float iniX, float iniY, Jogador jogador, TileMap[][] map) {
         Animation anim = new Animation(assets, "Fantasma", 6, 2);
@@ -59,7 +63,7 @@ public class Fantasma extends Entidade {
     }
 
     public void perception(float delta){
-        if(rayTimer.checkTimer(delta)) lookUp();
+        if(rayTimer.checkTimer(delta) && state != FantasmaState.FUGA) lookUp();
     }
 
     public void plan(float delta){
@@ -77,7 +81,13 @@ public class Fantasma extends Entidade {
             case PARADO:
                 if(waitTimer.checkTimer(delta)){
                     state = FantasmaState.PATRULHA;
-                    setVelocidade(50);
+                    setVelocidade(walk);
+                }
+                break;
+            case FUGA:
+                if(fugaTimer.checkTimer(delta) || getPosition().dst(target) < 50){
+                    state = FantasmaState.PATRULHA;
+                    setVelocidade(walk);
                 }
                 break;
         }
@@ -101,7 +111,7 @@ public class Fantasma extends Entidade {
     public void setTarget(Vector2 target) {
         if(target != null) {
             state = FantasmaState.INVESTIGA;
-            setVelocidade(120);
+            setVelocidade(run);
             this.target.set(target);
         }
     }
@@ -115,7 +125,7 @@ public class Fantasma extends Entidade {
             if(ray.isDetectedPlayer()){
                 if(state != FantasmaState.PERSEGUE) {
                     state = FantasmaState.PERSEGUE;
-                    setVelocidade(120);
+                    setVelocidade(run);
                     return;
                 }
             }
@@ -133,9 +143,17 @@ public class Fantasma extends Entidade {
         else this.bestTrail = null;
     }
 
+    public boolean isRunning(){
+        return state == FantasmaState.FUGA;
+    }
+
     public void onCollide(Entidade other) {
         if(other instanceof Salt){
-            state = FantasmaState.PARADO;
+            state = FantasmaState.FUGA;
+            do{
+                getNewTarget();
+            }while(target.dst(jogador.getPosition()) > Consts.TILE_SIZE * 20);
+            setVelocidade(run);
         }
     }
 }
@@ -144,5 +162,6 @@ enum FantasmaState {
     PATRULHA,
     PERSEGUE,
     INVESTIGA,
-    PARADO
+    PARADO,
+    FUGA
 }
