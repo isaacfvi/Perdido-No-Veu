@@ -1,6 +1,7 @@
 package com.mygdx.utils;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.core.Assets;
 import com.mygdx.entities.Camera;
 import com.mygdx.entities.Fantasma;
@@ -18,13 +19,15 @@ public class Controller {
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
-        this.jogador = Jogador.create(meuInput, assets, 80, 14*32, 14*32);
+        this.jogador = Jogador.create(meuInput, assets, 80, 0, 0);
         this.mansion = new Mansion(jogador);
 
         Collision collision = Collision.getInstance();
         collision.setUpMap(mansion.getMap(assets));
 
-        this.fantasma = Fantasma.create(assets, 50, 150, 150, jogador, mansion.getMap(null));
+        Vector2 fantasmaIniPosition = mansion.getEntityInitPosition();
+
+        this.fantasma = Fantasma.create(assets, 50, fantasmaIniPosition.x, fantasmaIniPosition.y, jogador, mansion.getMap(null));
 
         collision.inscreverEntidade(fantasma);
         collision.inscreverEntidade(jogador);

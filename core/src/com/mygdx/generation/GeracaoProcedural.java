@@ -25,8 +25,8 @@ public class GeracaoProcedural {
     private Texture texture;
     private final boolean saveImage = true;
 
-    private final int minRoomArea = 80;
-    private final int minRoomSide = 4;
+    private final int minRoomArea = 100;
+    private final int minRoomSide = 5;
 
     private int seed;
 
@@ -94,7 +94,7 @@ public class GeracaoProcedural {
     }
 
     public void generate(int startX, int startY, int endX, int endY, boolean bool) {
-        if ((endX - startX) * (endY - startY) < minRoomArea || (endX - startX <= minRoomSide) || (endY - startY <= minRoomSide)) {
+        if ((endX - startX) * (endY - startY) < minRoomArea || (endX - startX < minRoomSide) || (endY - startY < minRoomSide)) {
             rooms.add(new Room(startX, startY, endX, endY, minRoomSide));
 
         }else if (bool) {

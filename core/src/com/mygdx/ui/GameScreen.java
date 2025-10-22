@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.core.Assets;
 import com.mygdx.utils.Controller;
 import com.mygdx.utils.MeuInputProcessor;
+import com.mygdx.utils.Timer;
 
 public class GameScreen implements Screen {
 
@@ -15,6 +16,8 @@ public class GameScreen implements Screen {
     private MeuInputProcessor meuInput;
     private Assets assets;
     private SpriteBatch batch;
+
+    private Timer timer = new Timer(10);
 
     @Override
     public void show() {
@@ -32,6 +35,10 @@ public class GameScreen implements Screen {
         controller.update(delta);
 
         batch.setProjectionMatrix(controller.getCamera().getCamera().combined);
+
+        if (timer.checkTimer(delta)) {
+            System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
+        }
 
         batch.begin();
         controller.draw(batch);

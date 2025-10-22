@@ -31,7 +31,6 @@ public class Mansion {
     }
 
     public TileMap[][] generateMap(Assets assets) {
-        Consts.SEED = rand.nextInt(0, 999999);
         System.out.println("Seed: " + Consts.SEED);
         MapAssembler assembler = new MapAssembler(Consts.SEED);
         //184565
@@ -72,7 +71,7 @@ public class Mansion {
             System.out.println("X: "+x+" Y: "+y);
         } while(map[x][y].isCollidable());
 
-        return new Vector2(x * Consts.TILE_SIZE, y * Consts.TILE_SIZE);
+        return new Vector2(x * Consts.TILE_SIZE + 16, y * Consts.TILE_SIZE + 16);
     }
 
     public void draw(SpriteBatch batch){
