@@ -13,6 +13,8 @@ public class Animation {
 
     private int currentframe;
     private Timer timer = new Timer(0.25f);
+    private boolean loop = true;
+
 
     private int direcao;
 
@@ -37,14 +39,23 @@ public class Animation {
         this.direcao = direcao;
     }
 
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
     public void reset() {
         currentframe = 0;
         timer.reset();
     }
 
     public void update(float delta) {
-        if(timer.checkTimer(delta)) currentframe = (currentframe < sprite[0].length-1) ? currentframe+1 : 0;
-
+        if (timer.checkTimer(delta)) {
+            if (currentframe < sprite[0].length - 1) {
+                currentframe++;
+            } else if (loop) {
+                currentframe = 0;
+            }
+        }
     }
 
     public void draw(SpriteBatch batch, Vector2 pos) {

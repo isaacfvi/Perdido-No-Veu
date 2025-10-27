@@ -15,7 +15,8 @@ public class Salt extends Entidade {
     private Boolean active = false;
 
     public static Salt create(Assets assets) {
-        Animation anim = new Animation(assets, "Salt", 4, 1);
+        Animation anim = new Animation(assets, "Salt", 4, 1, 0.1f);
+        anim.setLoop(false);
         Rectangle hitbox = anim.getBounds();
         hitbox.setSize(hitbox.width, hitbox.height);
         return new Salt(hitbox, anim);
@@ -29,7 +30,6 @@ public class Salt extends Entidade {
     public void update(float delta) {
         if(active){
             super.update(delta);
-
             if(cooldown.checkTimer(delta)){
                 deactive();
             }
@@ -41,6 +41,7 @@ public class Salt extends Entidade {
             if(!active){
                 quantSalt--;
                 this.getHitbox().setPosition(pos.x - 32, pos.y - 32);
+                animReset();
                 Collision.getInstance().inscreverEntidade(this);
             }
             active = true;
@@ -50,6 +51,10 @@ public class Salt extends Entidade {
     public void deactive(){
         Collision.getInstance().removerEntidade(this);
         active = false;
+    }
+
+    public Boolean isActive() {
+        return active;
     }
 
     public void draw(SpriteBatch batch){

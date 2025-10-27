@@ -46,11 +46,11 @@ public class Jogador extends Entidade{
             else
                 this.setVelocidade(walk);
 
-            if(meuInput.isSpace()){
+            if(meuInput.isSpace())
                 salt.active(this.getPosition());
-            }
 
-            meuInput.update(this, delta);
+            if(!salt.isActive())
+                meuInput.update(this, delta);
         }
 
         salt.update(delta);
