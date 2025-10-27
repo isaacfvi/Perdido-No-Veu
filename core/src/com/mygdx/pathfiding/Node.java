@@ -3,9 +3,8 @@ package com.mygdx.pathfiding;
 public class Node {
 
     public int x, y;
-    public int gCost, hCost, fCost;
+    public int gCost, hCost;
     public Node parent;
-    public boolean isWalkable;
 
     public Node(int x, int y) {
         this.x = x;

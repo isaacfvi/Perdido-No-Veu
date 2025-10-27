@@ -78,7 +78,6 @@ public class Pathfinding {
 
         fantasma.getHitbox().getCenter(aux);
         Node startNode = nodeFromWorld(aux);
-
         Node targetNode = nodeFromWorld(target);
 
         resetNodes();
@@ -90,7 +89,7 @@ public class Pathfinding {
         while (!openList.isEmpty()) {
             Node current = openList.poll();
 
-            if (current == targetNode) {
+            if (current.x == targetNode.x && current.y == targetNode.y) {
                 reconstrimirCaminho(current, fantasma.getHitbox().getCenter(aux));
                 return;
             }
@@ -100,7 +99,11 @@ public class Pathfinding {
             for (Node neighbor : getNeighbors(current)) {
                 if (!isWalkable(neighbor) || closedSet.contains(neighbor)) continue;
 
-                int newGCost = current.gCost + 1;
+                boolean isDiagonal = (current.x != neighbor.x) && (current.y != neighbor.y);
+                int moveCost = isDiagonal ? 14 : 10;
+
+                int newGCost = current.gCost + moveCost;
+
                 if (newGCost < neighbor.gCost) {
                     neighbor.gCost = newGCost;
                     neighbor.hCost = heuristic(neighbor.x, neighbor.y, targetNode.x, targetNode.y);
@@ -131,15 +134,32 @@ public class Pathfinding {
     }
 
     private int heuristic(int iniX, int iniY, int finX, int finY) {
-        return Math.max(Math.abs(iniX - finX), Math.abs(iniY - finY));
+        switch (1) {
+            case 1:
+                int dx = Math.abs(iniX - finX);
+                int dy = Math.abs(iniY - finY);
+                return Math.max(dx, dy) * 10;
+
+            case 2:
+                double distance = Math.sqrt(Math.pow(iniX - finX, 2) + Math.pow(iniY - finY, 2));
+                return (int) (distance * 10);
+
+            case 3:
+                return (Math.abs(iniX - finX) + Math.abs(iniY - finY)) * 10;
+
+            default:
+                int dxDefault = Math.abs(iniX - finX);
+                int dyDefault = Math.abs(iniY - finY);
+                return Math.max(dxDefault, dyDefault) * 10;
+        }
     }
 
     private List<Node> getNeighbors(Node node) {
         neighbors.clear();
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
+        int[] dx = {-1, 1, 0, 0, -1, -1, 1, 1};
+        int[] dy = {0, 0, -1, 1, -1, 1, -1, 1};
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < dx.length; i++) {
             int nx = node.x + dx[i];
             int ny = node.y + dy[i];
 
