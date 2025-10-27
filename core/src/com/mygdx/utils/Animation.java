@@ -22,6 +22,13 @@ public class Animation {
         sprite = assets.getSprites("Entidades", name, col, rows);
     }
 
+    public Animation(Assets assets, String name, int col, int rows, float time) {
+        this.direcao = Consts.DIREITA;
+
+        sprite = assets.getSprites("Entidades", name, col, rows);
+        timer.setBreakTime(time);
+    }
+
     public Rectangle getBounds() {
         return new Rectangle(0, 0, sprite[0][0].getWidth(), sprite[0][0].getHeight());
     }

@@ -17,7 +17,9 @@ public class TccScreen implements Screen {
 
     @Override
     public void show() {
-        geracao = new GeracaoProcedural(40, 40, 6464);
+
+        //validate(30,30,100,5);
+        geracao = new GeracaoProcedural(30,40,100,5, new Random().nextInt());
         geracao.tccGenerate();
         batch = new SpriteBatch();
     }
@@ -56,13 +58,13 @@ public class TccScreen implements Screen {
         geracao.dispose();
     }
 
-    public void validate(){
+    public void validate(int width, int height, int area, int side) {
         int conected = 0;
         int testes = 100000;
         boolean isConnected;
 
         for(int i = 0; i < testes; i++){
-            geracao = new GeracaoProcedural(30, 40, new Random().nextInt());
+            geracao = new GeracaoProcedural(width, height, area, side, new Random().nextInt());
             geracao.tccGenerate();
             RoomConnectivityValidator validator = new RoomConnectivityValidator(geracao.getGrade());
             isConnected = validator.isAllRoomsConnected();

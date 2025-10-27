@@ -9,7 +9,7 @@ import com.mygdx.core.GameStart;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setForegroundFPS(60);
+		//config.setForegroundFPS(60);
 		config.setTitle("Aulas");
 
 		Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();

@@ -42,7 +42,6 @@ public class Assets {
         for (int i = 0; i < sprites.length; i++) {
             for (int j = 0; j < sprites[i].length; j++) {
                 sprites[i][j] = new Sprite(frames[i][j]);
-                sprites[i][j].setSize(32, 32);
             }
         }
         return sprites;

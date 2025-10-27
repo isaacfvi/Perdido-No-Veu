@@ -23,10 +23,10 @@ public class GeracaoProcedural {
 
     private Pixmap pixmap;
     private Texture texture;
-    private final boolean saveImage = true;
+    private boolean saveImage = true;
 
-    private final int minRoomArea = 100;
-    private final int minRoomSide = 5;
+    private int minRoomArea = 100;
+    private int minRoomSide = 5;
 
     private int seed;
 
@@ -34,12 +34,17 @@ public class GeracaoProcedural {
 
     private int imageCounter = 0;
 
-    public GeracaoProcedural(int width, int height, int seed) {
+    public GeracaoProcedural(int width, int height, int area, int side, int seed) {
         rand = new Random(seed);
         this.seed = seed;
         grade = new int[width][height];
         pixmap = new Pixmap(height, width, Pixmap.Format.RGBA8888);
         rooms = new ArrayList<>();
+
+        minRoomArea = area;
+        minRoomSide = side;
+
+        saveImage = false;
     }
 
     public GeracaoProcedural(int width, int height, Random rand) {
@@ -73,6 +78,7 @@ public class GeracaoProcedural {
         generateGrafo();
         createEntrances();
         posProcess();
+        createObstacles();
         texture = generatePixmap();
 
         if(saveImage) {
@@ -360,6 +366,9 @@ public class GeracaoProcedural {
                         break;
                     case 2:
                         pixmap.setColor(1, 1, 1, 1);
+                        break;
+                    case 3:
+                        pixmap.setColor(0, 1, 0, 1);
                         break;
                     default:
                         pixmap.setColor(1, 0, 0, 1);

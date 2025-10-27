@@ -12,11 +12,11 @@ public class Consts {
 
     // 358874
     // 68684684
-    public static int MAP_SIZE_X = 40;
-    public static int MAP_SIZE_Y = 30;
+    public static int MAP_SIZE_X = 30;
+    public static int MAP_SIZE_Y = 40;
 
-    public static final int QUANT_TRAPS = 0;
-    public static final int QUANT_OBSTACLES = 0;
+    public static final int QUANT_TRAPS = 20;
+    public static final int QUANT_OBSTACLES = 20;
 
     //Animations
     public static final byte DIREITA = 0;

@@ -11,11 +11,11 @@ import com.mygdx.world.Collision;
 public class Salt extends Entidade {
 
     private int quantSalt = 3;
-    private Timer cooldown = new Timer(2);
+    private Timer cooldown = new Timer(1);
     private Boolean active = false;
 
     public static Salt create(Assets assets) {
-        Animation anim = new Animation(assets, "Sapato", 1, 1);
+        Animation anim = new Animation(assets, "Salt", 4, 1);
         Rectangle hitbox = anim.getBounds();
         hitbox.setSize(hitbox.width, hitbox.height);
         return new Salt(hitbox, anim);
@@ -40,7 +40,7 @@ public class Salt extends Entidade {
         if(quantSalt > 0){
             if(!active){
                 quantSalt--;
-                this.getHitbox().setPosition(pos.x - 16, pos.y - 16);
+                this.getHitbox().setPosition(pos.x - 32, pos.y - 32);
                 Collision.getInstance().inscreverEntidade(this);
             }
             active = true;

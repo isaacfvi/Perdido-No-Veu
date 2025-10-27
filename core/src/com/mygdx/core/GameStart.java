@@ -2,6 +2,7 @@ package com.mygdx.core;
 
 import com.badlogic.gdx.Game;
 import com.mygdx.ui.GameScreen;
+import com.mygdx.ui.TccScreen;
 
 
 public class GameStart extends Game {

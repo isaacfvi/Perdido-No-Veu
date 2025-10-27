@@ -39,7 +39,7 @@ public class MapAssembler {
                     map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Piso" + generatePiso()), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), false);
                     floors.add(map[i][j]);
                 } else if(grade[i][j] == 3){
-                    map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Parede"), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), true);
+                    map[i][j] = new TileMap(asset.getSpriteFromAtlas("MansionTiles", "Caixa"), new Vector2(Consts.TILE_SIZE * i, Consts.TILE_SIZE * j), true);
 
                 }else if(grade[i][j] == 1){
 

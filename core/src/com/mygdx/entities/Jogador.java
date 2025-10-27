@@ -74,8 +74,8 @@ public class Jogador extends Entidade{
     }
 
     public void draw(SpriteBatch batch){
-        super.draw(batch);
         salt.draw(batch);
+        super.draw(batch);
     }
 
 }

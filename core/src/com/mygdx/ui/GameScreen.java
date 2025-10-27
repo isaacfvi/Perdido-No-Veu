@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
 
         batch.setProjectionMatrix(controller.getCamera().getCamera().combined);
 
-        if (timer.checkTimer(delta)) {
+        if (timer.checkTimer(delta) || Gdx.graphics.getFramesPerSecond() < 55) {
             System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
         }
 

@@ -22,4 +22,8 @@ public class Timer {
         tempoAcumulado = 0;
     }
 
+    public void setBreakTime(float breakTime){
+        this.breakTime = breakTime;
+    }
+
 }
