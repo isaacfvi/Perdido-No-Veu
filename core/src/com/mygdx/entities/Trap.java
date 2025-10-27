@@ -12,7 +12,7 @@ public class Trap extends Entidade {
         Animation anim = new Animation(assets, "Trap" + trap, 1, 1);
         Rectangle hitbox = anim.getBounds();
         hitbox.setCenter(iniX, iniY);
-        hitbox.setSize(hitbox.width, hitbox.height);
+        hitbox.setSize(hitbox.width - 5, hitbox.height - 5);
         return new Trap(hitbox, anim);
     }
 
