@@ -152,7 +152,7 @@ public class Fantasma extends Entidade {
             state = FantasmaState.FUGA;
             do{
                 getNewTarget();
-            }while(target.dst(jogador.getPosition()) > Consts.TILE_SIZE * 20);
+            }while(target.dst(jogador.getPosition()) < Consts.TILE_SIZE * 20);
             setVelocidade(run);
         }
     }
