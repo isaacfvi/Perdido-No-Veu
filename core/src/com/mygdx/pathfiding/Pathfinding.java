@@ -134,24 +134,7 @@ public class Pathfinding {
     }
 
     private int heuristic(int iniX, int iniY, int finX, int finY) {
-        switch (1) {
-            case 1:
-                int dx = Math.abs(iniX - finX);
-                int dy = Math.abs(iniY - finY);
-                return Math.max(dx, dy) * 10;
-
-            case 2:
-                double distance = Math.sqrt(Math.pow(iniX - finX, 2) + Math.pow(iniY - finY, 2));
-                return (int) (distance * 10);
-
-            case 3:
-                return (Math.abs(iniX - finX) + Math.abs(iniY - finY)) * 10;
-
-            default:
-                int dxDefault = Math.abs(iniX - finX);
-                int dyDefault = Math.abs(iniY - finY);
-                return Math.max(dxDefault, dyDefault) * 10;
-        }
+        return Math.max(Math.abs(iniX - finX), Math.abs(iniY - finY)) * 10;
     }
 
     private List<Node> getNeighbors(Node node) {
