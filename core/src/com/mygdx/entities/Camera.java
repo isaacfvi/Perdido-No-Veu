@@ -17,7 +17,7 @@ public class Camera{
 
         position = followingEntidade.getPosition();
         camera.position.set(position.x, position.y, 0);
-        camera.zoom = 0.2f;
+        camera.zoom = 0.07f;
     }
 
     public OrthographicCamera getCamera(){

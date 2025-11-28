@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.core.Assets;
+import com.mygdx.core.Consts;
 import com.mygdx.utils.Controller;
 import com.mygdx.utils.MeuInputProcessor;
 import com.mygdx.utils.Timer;
+import com.sun.org.apache.bcel.internal.Const;
 
 public class GameScreen implements Screen {
 
@@ -35,14 +37,19 @@ public class GameScreen implements Screen {
         controller.update(delta);
 
         batch.setProjectionMatrix(controller.getCamera().getCamera().combined);
-
+/*
         if (timer.checkTimer(delta) || Gdx.graphics.getFramesPerSecond() < 55) {
             System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
         }
-
+*/
         batch.begin();
         controller.draw(batch);
         batch.end();
+
+        if(Consts.DEBUG){
+            controller.drawDebug();
+            controller.drawPaths(controller.getCamera().getCamera().combined);
+        }
     }
 
     @Override
@@ -69,5 +76,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         batch.dispose();
         assets.dispose();
+        controller.dispose();
     }
 }

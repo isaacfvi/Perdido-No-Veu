@@ -8,10 +8,10 @@ public class Consts {
     public static final byte CORREDOR = 0;
     public static final byte QUARTO = 1;
 
-    public static int SEED = 546843;
-
+    public static int SEED = -1;
+    // 321515
     // 358874
-    // 68684684
+    // 1089955076
     public static int MAP_SIZE_X = 30;
     public static int MAP_SIZE_Y = 40;
 
@@ -24,6 +24,7 @@ public class Consts {
 
     // Tiles
     public static final int TILE_SIZE = 32;
+    public static final boolean DEBUG = false;
     
 
 }

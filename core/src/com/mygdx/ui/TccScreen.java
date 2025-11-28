@@ -19,7 +19,7 @@ public class TccScreen implements Screen {
     public void show() {
 
         //validate(30,30,100,5);
-        geracao = new GeracaoProcedural(30,40,100,5, new Random().nextInt());
+        geracao = new GeracaoProcedural(30,40,100,5, 546843);
         geracao.tccGenerate();
         batch = new SpriteBatch();
     }

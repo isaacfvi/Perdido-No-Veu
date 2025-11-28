@@ -1,12 +1,14 @@
 package com.mygdx.utils;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.core.Assets;
 import com.mygdx.entities.Camera;
 import com.mygdx.entities.Fantasma;
 import com.mygdx.entities.Jogador;
-import com.mygdx.entities.Trap;
 import com.mygdx.world.Collision;
 import com.mygdx.world.Mansion;
 
@@ -16,6 +18,7 @@ public class Controller {
     private Fantasma fantasma;
     private Jogador jogador;
     private Camera camera;
+    private ShapeRenderer shapeRenderer;
 
 
     public Controller(MeuInputProcessor meuInput, Assets assets) {
@@ -33,6 +36,8 @@ public class Controller {
         collision.inscreverEntidade(jogador);
 
         this.camera = new Camera(jogador);
+
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     public void update(float delta){
@@ -52,7 +57,25 @@ public class Controller {
         fantasma.draw(batch);
     }
 
+    public void drawPaths(Matrix4 projectionMatrix) {
+        fantasma.drawPath(projectionMatrix);
+    }
+
+    public void drawDebug() {
+        shapeRenderer.setProjectionMatrix(camera.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.rect(100, 100, 50, 50);
+
+        fantasma.drawVision(shapeRenderer);
+
+        shapeRenderer.end();
+    }
+
     public Camera getCamera() {
         return camera;
     }
+
+    public void dispose() {mansion.dispose();}
 }

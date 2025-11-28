@@ -62,4 +62,14 @@ public class Ray extends Entidade {
 
     public TileMap getBestTile() { return bestTile; }
 
+    // Debug
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public int getSteps() {
+        return steps;
+    }
+
 }

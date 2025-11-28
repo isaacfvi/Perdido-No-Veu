@@ -31,8 +31,12 @@ public class Mansion {
     }
 
     public TileMap[][] generateMap(Assets assets) {
-        System.out.println("Seed: " + Consts.SEED);
-        MapAssembler assembler = new MapAssembler(Consts.SEED);
+        int seed;
+        if (Consts.SEED != -1) seed = Consts.SEED;
+        else seed = rand.nextInt();
+
+        System.out.println("Seed: " + seed);
+        MapAssembler assembler = new MapAssembler(seed);
         //184565
         this.map = assembler.makeMap(assets);
         this.floors = assembler.getFloors();
@@ -71,7 +75,7 @@ public class Mansion {
             System.out.println("X: "+x+" Y: "+y);
         } while(map[x][y].isCollidable());
 
-        return new Vector2(x * Consts.TILE_SIZE + 16, y * Consts.TILE_SIZE + 16);
+        return new Vector2(x * Consts.TILE_SIZE + 12, y * Consts.TILE_SIZE + 12);
     }
 
     public void draw(SpriteBatch batch){
@@ -98,6 +102,14 @@ public class Mansion {
             }
         }
         return null;
+    }
+
+    public void dispose(){
+        for (TileMap[] tilemap : map) {
+            for (TileMap tile : tilemap) {
+                tile.dispose();
+            }
+        }
     }
 
 }
