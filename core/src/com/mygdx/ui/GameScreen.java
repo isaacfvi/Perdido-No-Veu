@@ -19,8 +19,6 @@ public class GameScreen implements Screen {
     private Assets assets;
     private SpriteBatch batch;
 
-    private Timer timer = new Timer(10);
-
     @Override
     public void show() {
         assets = new Assets();
@@ -37,11 +35,7 @@ public class GameScreen implements Screen {
         controller.update(delta);
 
         batch.setProjectionMatrix(controller.getCamera().getCamera().combined);
-/*
-        if (timer.checkTimer(delta) || Gdx.graphics.getFramesPerSecond() < 55) {
-            System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
-        }
-*/
+
         batch.begin();
         controller.draw(batch);
         batch.end();
