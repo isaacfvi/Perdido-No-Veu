@@ -1,6 +1,8 @@
 package com.mygdx.ui;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +20,12 @@ public class GameScreen implements Screen {
     private MeuInputProcessor meuInput;
     private Assets assets;
     private SpriteBatch batch;
+
+    private ScreenNavigator navigator;
+
+    public GameScreen(ScreenNavigator navigator) {
+        this.navigator = navigator;
+    }
 
     @Override
     public void show() {
@@ -44,6 +52,10 @@ public class GameScreen implements Screen {
             controller.drawDebug();
             controller.drawPaths(controller.getCamera().getCamera().combined);
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            navigator.goToMenu();
+        }
     }
 
     @Override
@@ -63,7 +75,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override

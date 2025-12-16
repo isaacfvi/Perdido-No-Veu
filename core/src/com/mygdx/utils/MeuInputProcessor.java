@@ -1,5 +1,6 @@
 package com.mygdx.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,12 @@ public class MeuInputProcessor implements InputProcessor {
     private boolean shift, space;
 
     private Vector2 dir = new Vector2();
+
+    private boolean clickEvent;
+    private Vector2 clickPos = new Vector2();
+
+    private Vector2 mouseLoc = new Vector2();
+    private char typedChar;
 
     public MeuInputProcessor() {
 
@@ -58,17 +65,23 @@ public class MeuInputProcessor implements InputProcessor {
 
     @Override
     public boolean keyTyped(char c) {
+        typedChar = c;
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return false;
     }
 
     @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
-        return false;
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.LEFT) {
+            clickEvent = true;
+            clickPos.set(screenX, Gdx.graphics.getHeight() - screenY);
+            return true;
+        }
+        return true;
     }
 
     @Override
@@ -83,7 +96,8 @@ public class MeuInputProcessor implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int i, int i1) {
-        return false;
+        mouseLoc.set(i, Gdx.graphics.getHeight() - i1);
+        return true;
     }
 
     @Override
@@ -104,12 +118,32 @@ public class MeuInputProcessor implements InputProcessor {
         return moviment[0] || moviment[1] || moviment[2] || moviment[3];
     }
 
+    public Vector2 hasClicked() {
+        if (!clickEvent) return null;
+        clickEvent = false;
+        return clickPos;
+    }
+
+    public Vector2 getMouseLoc() {
+        return mouseLoc;
+    }
+
     public boolean isRunning(){
         return shift;
     }
 
     public boolean isSpace() {
         return space;
+    }
+
+    public char getTypedChar() {
+        char c = typedChar;
+        typedChar = 0;
+        return c;
+    }
+
+    public boolean isKeyPressed(int key) {
+        return Gdx.input.isKeyJustPressed(key);
     }
 
 }

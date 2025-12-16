@@ -25,6 +25,8 @@ public class Assets {
     public void loadTextures(){
         assetManager.load("MansionTiles.atlas", TextureAtlas.class);
         assetManager.load("Entidades.atlas", TextureAtlas.class);
+        assetManager.load("Menu.atlas", TextureAtlas.class);
+        assetManager.finishLoading();
     }
 
     public TextureAtlas getAtlas(String name){ return assetManager.get(name + ".atlas", TextureAtlas.class); }
