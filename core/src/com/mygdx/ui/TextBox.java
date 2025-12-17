@@ -80,4 +80,13 @@ public class TextBox {
         if (text.isEmpty()) return null;
         return Long.parseLong(text.toString());
     }
+
+    public void setText(String value) {
+        text.setLength(0);
+        text.append(value);
+    }
+
+    public void setText(long value) {
+        setText(String.valueOf(value));
+    }
 }

@@ -3,7 +3,9 @@ package com.mygdx.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,13 +15,15 @@ import com.mygdx.core.Assets;
 import com.mygdx.core.Consts;
 import com.mygdx.utils.MeuInputProcessor;
 
+import java.util.Random;
+
 public class Menu implements Screen {
 
     private final ScreenNavigator navigator;
     private MeuInputProcessor meuInput;
     private Assets assets;
     private SpriteBatch batch;
-    private BitmapFont font;
+    private BitmapFont font, labelFont;
 
     private NinePatch menuBackground;
 
@@ -33,6 +37,7 @@ public class Menu implements Screen {
 
     private Button[] buttons = new Button[2];
     private TextBox[] textBoxes = new TextBox[4];
+    private Text[] labels = new Text[4];
 
     private TextBox focusedTextBox;
 
@@ -47,11 +52,20 @@ public class Menu implements Screen {
         meuInput = new MeuInputProcessor();
         Gdx.input.setInputProcessor(meuInput);
         font = new BitmapFont();
+        labelFont = new BitmapFont();
+        labelFont.getData().setScale(1.5f);
 
+        labelFont.getRegion().getTexture().setFilter(
+                Texture.TextureFilter.Linear,
+                Texture.TextureFilter.Linear
+        );
+
+        labelFont.setColor(Color.BLACK);
         font.setColor(Color.BLACK);
 
         createButtons();
         createTextBox();
+        createLabels();
         menuBackground = assets.getAtlas("Menu").createPatch("Button");
     }
 
@@ -176,7 +190,6 @@ public class Menu implements Screen {
         }
     }
 
-
     private void createButtons() {
         buttons[0] = new Button(font,
                 assets.getAtlas("Menu").createPatch("Button"),
@@ -199,6 +212,7 @@ public class Menu implements Screen {
                         buttonHeight
                 )
         );
+        textBoxes[0].setText(new Random().nextInt());
         textBoxes[1] = new TextBox(
                 font,
                 assets.getAtlas("Menu").createPatch("Button"),
@@ -209,7 +223,7 @@ public class Menu implements Screen {
                         buttonHeight
                 )
         );
-
+        textBoxes[1].setText(40);
         textBoxes[2] = new TextBox(
                 font,
                 assets.getAtlas("Menu").createPatch("Button"),
@@ -220,7 +234,7 @@ public class Menu implements Screen {
                         buttonHeight
                 )
         );
-
+        textBoxes[2].setText(40);
         textBoxes[3] = new TextBox(
                 font,
                 assets.getAtlas("Menu").createPatch("Button"),
@@ -231,7 +245,26 @@ public class Menu implements Screen {
                         buttonHeight
                 )
         );
+        textBoxes[3].setText(1);
+    }
 
+    private void createLabels(){
+       labels[0] = new Text("Seed", labelFont,
+               x + margin,
+               y + bgHeight - margin * 3.5f
+       );
+        labels[1] = new Text("Número de obstáculos", labelFont,
+                x + margin,
+                y + bgHeight - margin * 6.5f
+        );
+        labels[2] = new Text("Número de Armadilhas", labelFont,
+                x + margin,
+                y + bgHeight - margin * 9.5f
+        );
+        labels[3] = new Text("Numero de fantasmas", labelFont,
+                x + margin,
+                y + bgHeight - margin * 12.5f
+        );
     }
 
     public void draw(SpriteBatch batch) {
@@ -243,6 +276,10 @@ public class Menu implements Screen {
 
         for (TextBox box : textBoxes) {
             box.draw(batch);
+        }
+
+        for (Text text : labels) {
+            text.draw(batch);
         }
     }
 
