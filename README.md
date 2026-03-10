@@ -6,6 +6,15 @@ Este projeto implementa um jogo digital 2D de exploração ambientado em uma **m
 
 O jogo combina técnicas de **Geração Procedural de Conteúdo (PCG)** e **Inteligência Artificial** para criar ambientes dinâmicos e um antagonista (fantasma) capaz de reagir ao jogador de forma adaptativa.
 
+<iframe 
+width="560" 
+height="315" 
+src="[https://www.youtube.com/embed/VIDEO_ID](https://youtu.be/KfF3wb2rrvQ)" 
+title="YouTube video player" 
+frameborder="0" 
+allowfullscreen>
+</iframe>
+
 ---
 
 ## 🎯 Objetivo do Projeto
